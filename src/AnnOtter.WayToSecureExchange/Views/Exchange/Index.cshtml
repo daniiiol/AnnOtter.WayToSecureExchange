@@ -15,11 +15,11 @@
         <div class="input-group spacebox">
             <span class="input-group-text"><i id="statusIcon" class="fa-solid fa-lock"></i></span>
             <textarea id="plaintextData" class="form-control center" aria-label="key" rows="1" disabled="disabled">------- LOADING... -------</textarea>
-            <span class="input-group-text copyElement" onclick="copyToClipboard('plaintextData')"><i class="fa-solid fa-copy"></i></span>
+            <span class="input-group-text copyElement" id="copyPlaintextButton"><i class="fa-solid fa-copy"></i></span>
         </div>
 
         <div class="col-auto">
-            <button onclick="revealData()" id="revealDataButton" disabled="disabled" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.ExchangeRevealButton</button>
+            <button id="revealDataButton" disabled="disabled" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.ExchangeRevealButton</button>
         </div>
 
         <div id="infoArea">

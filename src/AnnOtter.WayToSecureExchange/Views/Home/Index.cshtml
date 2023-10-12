@@ -14,11 +14,11 @@
     <div class="card-body">
         <div class="input-group spacebox">
             <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
-            <textarea id="plaintextData" class="form-control" aria-label="key" rows="10" onkeyup="countChars()"></textarea> <p id="dataCounter" class="counter">0 / 2000</p>
+            <textarea id="plaintextData" class="form-control" aria-label="key" rows="10"></textarea> <p id="dataCounter" class="counter">0 / 2000</p>
         </div>
 
         <div class="col-auto">
-            <button onclick="generateASecureExchange()" id="encryptDataButton" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.HomeGenerateButton</button>
+            <button id="encryptDataButton" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.HomeGenerateButton</button>
         </div>
 
         <div class="input-group spacebox" id="resultbox" style="display:none;">
@@ -34,7 +34,7 @@
 
             <span class="input-group-text"><i class="fa-solid fa-link"></i></span>
             <input id="encryptedKeyUrl" class="form-control input-success" aria-label="link" disabled="disabled" value="https://..." />
-            <span class="input-group-text copyElement" onclick="copyToClipboard('encryptedKeyUrl')"><i class="fa-solid fa-copy"></i></span>
+            <span class="input-group-text copyElement" id="copyUrlButton""><i class="fa-solid fa-copy"></i></span>
 
             <div class="input-group resultLeadElement">
                 <p>@Model.Labels.HomeResultSuccessHashCheckText:</p>
@@ -58,12 +58,12 @@
 
             <span class="input-group-text"><i class="fa-solid fa-exclamation"></i></span>
             <input id="errorMessage" class="form-control input-error" aria-label="link" disabled="disabled" value="<ExceptionText>" />
-            <span class="input-group-text copyElement" onclick="copyUrlToClipboard()"><i class="fa-solid fa-copy"></i></span>
+            <span class="input-group-text copyElement" id="copyErrorButton"><i class="fa-solid fa-copy"></i></span>
         </div>
 
         <div class="col-auto" id="resetDataButton" style="display:none;">
             <hr />
-            <button onclick="resetASecureExchange()" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.HomeCreateNewSecret</button>
+            <button id="resetExchangeButton" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.HomeCreateNewSecret</button>
         </div>
     </div>
 </div>

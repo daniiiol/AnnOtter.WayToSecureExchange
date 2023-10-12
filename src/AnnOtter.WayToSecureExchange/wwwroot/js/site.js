@@ -4,6 +4,55 @@
  */
 document.addEventListener('DOMContentLoaded', async function () {
 
+    const copyUrlButton = document.getElementById("copyUrlButton");
+    if (copyUrlButton) {
+        copyUrlButton.addEventListener('click', function () {
+            copyToClipboard('encryptedKeyUrl');
+        });
+    }
+
+    const copyErrorButton = document.getElementById("copyErrorButton");
+    if (copyErrorButton) {
+        copyErrorButton.addEventListener('click', function () {
+            copyToClipboard('errorMessage');
+        });
+    }
+
+    const encryptDataButton = document.getElementById("encryptDataButton");
+    if (encryptDataButton) {
+        encryptDataButton.addEventListener('click', function () {
+            generateASecureExchange();
+        });
+    }
+
+    const plaintextData = document.getElementById("plaintextData");
+    if (plaintextData) {
+        plaintextData.addEventListener('keyup', function () {
+            countChars();
+        });
+    }
+
+    const copyPlaintextButton = document.getElementById("copyPlaintextButton");
+    if (copyPlaintextButton) {
+        copyPlaintextButton.addEventListener('click', function () {
+            copyToClipboard('plaintextData');
+        });
+    }
+
+    const revealDataButton = document.getElementById("revealDataButton");
+    if (revealDataButton) {
+        revealDataButton.addEventListener('click', function () {
+            revealData();
+        });
+    }
+
+    const resetExchangeButton = document.getElementById("resetExchangeButton");
+    if (resetExchangeButton) {
+        resetExchangeButton.addEventListener('click', function () {
+            resetASecureExchange();
+        });
+    }
+        
     // Exchange View
     if (window.location.pathname.startsWith("/exchange")) {
 
