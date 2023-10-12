@@ -1,0 +1,40 @@
+﻿@using AnnOtter.WayToSecureExchange.Models.ViewModels;
+@model DefaultViewModel;
+
+@{
+    ViewData["Title"] = "Receive your secret";
+}
+
+<h1>@Model.Labels.MainTitle</h1>
+<p class="lead">
+    @Model.Labels.ExchangeLead_Part1 <button type="button" class="btn btn-light fw-bold" style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .6rem;">@Model.Labels.ExchangeRevealButton</button> @Model.Labels.ExchangeLead_Part2
+</p>
+
+<div class="card border-dark">
+    <div class="card-body">
+        <div class="input-group spacebox">
+            <span class="input-group-text"><i id="statusIcon" class="fa-solid fa-lock"></i></span>
+            <textarea id="plaintextData" class="form-control center" aria-label="key" rows="1" disabled="disabled">------- LOADING... -------</textarea>
+            <span class="input-group-text copyElement" onclick="copyToClipboard('plaintextData')"><i class="fa-solid fa-copy"></i></span>
+        </div>
+
+        <div class="col-auto">
+            <button onclick="revealData()" id="revealDataButton" disabled="disabled" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.ExchangeRevealButton</button>
+        </div>
+
+        <div id="infoArea">
+            <p class="info" id="hintWarning"><i class="fa-solid fa-circle-exclamation info-extreme"></i> <i>@Model.Labels.ExchangeHintWarningText</i></p>
+            <p class="success" id="hintSuccess" style="display:none;"><i class="fa-solid fa-circle-exclamation success-extreme"></i> <i>@Model.Labels.ExchangeHintSuccessText</i></p>
+            <p class="warning" id="hintNotFound" style="display:none;"><i class="fa-solid fa-circle-exclamation warning-extreme"></i> <i>@Model.Labels.ExchangeHintNotFoundText</i></p>
+        </div>
+
+        <div class="input-group resultLeadElement" id="resultLeadElement" style="display:none;">
+            <p>@Model.Labels.ExchangeSuccessHashCheckText:</p>
+            <ul>
+                <li><i class="fa-solid fa-server"></i> @Model.Labels.ExchangeSuccessHashServer: <code id="serverHashEncrypted">null</code> [SHA-256]</li>
+                <li><i class="fa-regular fa-window-maximize"></i> @Model.Labels.ExchangeSuccessHashLocal: <code id="localHashEncrypted">null</code> [SHA-256]</li>
+            </ul>
+        </div>
+    </div>
+    
+</div>

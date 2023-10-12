@@ -1,0 +1,92 @@
+@import url(/lib/fa/css/fa-all.min.css);
+
+img {
+    border-radius: 999px;
+}
+
+.spacebox {
+    margin-bottom: 10px;
+}
+
+h2.resultLeadTitle {
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+.resultLeadElement {
+    margin-top: 20px;
+}
+
+.checkSuccess {
+    color: limegreen;
+}
+
+.copyElement:hover {
+    color: rosybrown;
+    cursor: pointer;
+}
+
+.copyElement:active {
+    color: sandybrown;
+    cursor: pointer;
+}
+
+.warning {
+    color:palevioletred;
+}
+
+.warning-extreme {
+    color: #cc3363;
+}
+
+.info {
+    color: #f4ce6e;
+}
+
+.info-extreme {
+    color: #ffbf00;
+}
+
+.success {
+    color: limegreen;
+}
+
+.success-extreme {
+    color: lawngreen;
+}
+
+.footerLink {
+    text-decoration: none;
+    color: lightgrey;
+}
+
+.footerLink:hover {
+    color: mediumpurple;
+}
+
+.counter {
+    writing-mode: vertical-lr;
+}
+
+.input-success {
+    background-color: #354a40 !important;
+}
+
+.input-error {
+    background-color: #503a40 !important;
+}
+
+hr {
+    border: solid 1px;
+    color: #adb5bd;
+    width: 50%;
+    margin: 30px 25% 30px 25% !important;
+}
+
+li {
+    text-align: left;
+}
+
+textarea.center {
+    text-align: center !important;
+}

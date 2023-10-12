@@ -1,0 +1,20 @@
+version: '1.0'
+
+services:
+  webapp:
+    image: annotter.way2secexchange:latest
+    container_name: AnnOtter-WayToSecureExchange
+    ports:
+      - 8080:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      #- POSTGRESQLCONNSTR_DatabaseConnection_AO_ExchangeDatabase=<PostgreSQL-connectionString>
+      #- ENCRYPTION__KEY=<Add-Your-Base64-Encoded-32bit-Key-Here-For-Double-Encryption>
+      #- MAIN__RETENTIONSPAN=30.00:00:00 # Deletes all Secrets > 30 Days
+      #- RATELIMITER__SHORTBURSTPERMITLIMIT=6
+      #- RATELIMITER__SHORTBURSTWINDOW=2
+      #- RATELIMITER__SHORTBURSTAUTOREPLENISHMENT=true
+      #- RATELIMITER__GENERALPERMITLIMIT=20
+      #- RATELIMITER__GENERALWINDOW=30
+      #- RATELIMITER__GENERALAUTOREPLENISHMENT=true

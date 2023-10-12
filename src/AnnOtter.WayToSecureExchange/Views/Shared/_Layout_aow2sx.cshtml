@@ -1,0 +1,45 @@
+﻿@using AnnOtter.WayToSecureExchange.Models.ViewModels;
+@model DefaultViewModel;
+
+<!DOCTYPE html>
+<html lang="en" class="h-100" data-bs-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/main.css" integrity="sha384-ef+Ddr0X69oyeUbiJpyf8Li8SAnA4HJgx0EauPODw1A9l4RMMNmdNhG13r7jSLpG">
+    <link rel="stylesheet" href="/lib/bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ">
+    <title>@ViewData["Title"] - Ann Otter Way To Secure Exchange</title>
+
+</head>
+
+<body class="d-flex h-100 text-center text-bg-dark">
+
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
+        <header class="mb-auto">
+            <div>
+                <h3 class="float-md-start mb-0">&nbsp;</h3>
+            </div>
+        </header>
+
+        <main class="container image" data-bs-theme="dark">
+            @if (Model.Appearance.ShowLogo)
+            {
+                <a title="Link to home" href="/"><img src="@Model.Appearance.LogoPath" width="128" alt="Ann Otter Way To Secure Exchange Logo" /></a>
+            }
+            
+            @RenderBody()
+        </main>
+
+        <footer class="mt-auto text-white-50">
+            <p>v0.9.0 // Created with ❤️ by <a class="footerLink" href="https://twitter.com/Ann_Otter_" target="_blank" title="Link to Ann Otter's X-Account'">Ann Otter</a></p>
+        </footer>
+    </div>
+
+    <script src="/lib/bootstrap-5.3.0-alpha3-dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"></script>
+    <script src="/js/aes.js" integrity="sha384-HclyoS9UqnA5/xOfWMyXh+Eyqicfop97ZmtVlqicPWwFNH2INcu+NPhg4dhPlbXs"></script>
+    <script src="/js/site.js" integrity="sha384-nJXawaPn2xJ5jcTcwyTWzorRGBdUH3nokcFKyABLF/ZxN0sLTU3qv96LKFPDMvhC"></script>
+</body>
+
+</html>

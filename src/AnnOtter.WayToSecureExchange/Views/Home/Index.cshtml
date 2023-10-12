@@ -1,0 +1,69 @@
+﻿@using AnnOtter.WayToSecureExchange.Models.ViewModels;
+@model DefaultViewModel
+
+@{
+    ViewData["Title"] = "Generate a secret exchange";
+}
+
+<h1>@Model.Labels.MainTitle</h1>
+<p class="lead">
+    @Model.Labels.HomeLead_Part1 <button type="button" class="btn btn-light fw-bold" style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .6rem;">@Model.Labels.HomeGenerateButton</button> @Model.Labels.HomeLead_Part2
+</p>
+
+<div class="card border-dark">
+    <div class="card-body">
+        <div class="input-group spacebox">
+            <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+            <textarea id="plaintextData" class="form-control" aria-label="key" rows="10" onkeyup="countChars()"></textarea> <p id="dataCounter" class="counter">0 / 2000</p>
+        </div>
+
+        <div class="col-auto">
+            <button onclick="generateASecureExchange()" id="encryptDataButton" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.HomeGenerateButton</button>
+        </div>
+
+        <div class="input-group spacebox" id="resultbox" style="display:none;">
+            <div class="input-group resultLeadElement" id="leadElement">
+                <h2 class="lead resultLeadTitle">
+                    <i class="fa-solid fa-check checkSuccess"></i> @Model.Labels.HomeResultSuccessTitle
+                </h2>
+
+                <div class="input-group resultLeadElement" id="leadText">
+                    <p>@Model.Labels.HomeResultSuccessText:</p>
+                </div>
+            </div>
+
+            <span class="input-group-text"><i class="fa-solid fa-link"></i></span>
+            <input id="encryptedKeyUrl" class="form-control input-success" aria-label="link" disabled="disabled" value="https://..." />
+            <span class="input-group-text copyElement" onclick="copyToClipboard('encryptedKeyUrl')"><i class="fa-solid fa-copy"></i></span>
+
+            <div class="input-group resultLeadElement">
+                <p>@Model.Labels.HomeResultSuccessHashCheckText:</p>
+                <ul>
+                    <li><i class="fa-regular fa-window-maximize"></i></i> @Model.Labels.HomeResultSuccessHashLocal: <code id="localHashEncrypted">null</code> [SHA-256]</li>
+                    <li><i class="fa-solid fa-server"></i> @Model.Labels.HomeResultSuccessHashServer: <code id="serverHashEncrypted">null</code> [SHA-256]</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="input-group spacebox" id="resultboxError" style="display:none;">
+            <div class="input-group resultLeadElement" id="leadElement">
+                <h2 class="lead resultLeadTitle">
+                    <i class="fa-solid fa-circle-exclamation warning"></i> @Model.Labels.HomeResultFailedTitle
+                </h2>
+
+                <div class="input-group resultLeadElement" id="leadText">
+                    <p>@Model.Labels.HomeResultFailedText:</p>
+                </div>
+            </div>
+
+            <span class="input-group-text"><i class="fa-solid fa-exclamation"></i></span>
+            <input id="errorMessage" class="form-control input-error" aria-label="link" disabled="disabled" value="<ExceptionText>" />
+            <span class="input-group-text copyElement" onclick="copyUrlToClipboard()"><i class="fa-solid fa-copy"></i></span>
+        </div>
+
+        <div class="col-auto" id="resetDataButton" style="display:none;">
+            <hr />
+            <button onclick="resetASecureExchange()" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.HomeCreateNewSecret</button>
+        </div>
+    </div>
+</div>
