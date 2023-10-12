@@ -2,7 +2,7 @@ version: '0.9'
 
 services:
   webapp:
-    image: daniiiol/annotter.way2secexchange # or local image: annotter.way2secexchange:latest
+    image: daniiiol/annotter.way2secexchange:latest # or local image: annotter.way2secexchange:latest
     container_name: AnnOtter-WayToSecureExchange
     ports:
       - 8080:80
