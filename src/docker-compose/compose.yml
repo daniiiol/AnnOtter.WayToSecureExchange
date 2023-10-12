@@ -1,8 +1,8 @@
-version: '1.0'
+version: '0.9'
 
 services:
   webapp:
-    image: annotter.way2secexchange:latest
+    image: daniiiol/annotter.way2secexchange # or local image: annotter.way2secexchange:latest
     container_name: AnnOtter-WayToSecureExchange
     ports:
       - 8080:80
@@ -18,3 +18,7 @@ services:
       #- RATELIMITER__GENERALPERMITLIMIT=20
       #- RATELIMITER__GENERALWINDOW=30
       #- RATELIMITER__GENERALAUTOREPLENISHMENT=true
+      #- APPEARANCE__SHOWLOGO=true
+      #- APPEARANCE__LOGOPATH=/img/aow2se-logo3.png
+      #- SECURITYHEADERS__<headername> # See appsettings.json for all security headers
+      #- LABELS__<labelname> # See appsettings.json for all label names
