@@ -87,7 +87,7 @@ namespace AnnOtter.WayToSecureExchange.Middleware
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex.Message, ex);
+                _logger.LogError("{ex.Message}", ex.Message);
             }
 
             await _next.Invoke(context);

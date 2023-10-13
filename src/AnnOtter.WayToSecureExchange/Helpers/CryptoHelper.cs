@@ -16,24 +16,17 @@ namespace AnnOtter.WayToSecureExchange.Helpers
         /// <returns>A SHA-256 hashstring based on the inputString.</returns>
         public static string GetSha256Hash(string inputString)
         {
-			try
+            var encoder = new UTF8Encoding();
+            byte[] inputBytes = encoder.GetBytes(inputString);
+            byte[] hashBytes = SHA256.HashData(inputBytes);
+
+            var sb = new StringBuilder();
+            foreach (byte b in hashBytes)
             {
-                var encoder = new UTF8Encoding();
-                byte[] inputBytes = encoder.GetBytes(inputString);
-                byte[] hashBytes = SHA256.HashData(inputBytes);
-
-                var sb = new StringBuilder();
-                foreach (byte b in hashBytes)
-                {
-                    sb.Append(b.ToString("x2")); // "x2" specifies the hexadecimal formatting
-                }
-
-                return sb.ToString();
+                sb.Append(b.ToString("x2")); // "x2" specifies the hexadecimal formatting
             }
-            catch
-			{
-				throw;
-			}
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -49,7 +42,7 @@ namespace AnnOtter.WayToSecureExchange.Helpers
             byte[] keyBytes = Convert.FromBase64String(key); // 32-Byte Key needed!
             byte[] tagBytes = new byte[16];
             byte[] nonceBytes = new byte[12];
-            
+
             RandomNumberGenerator.Fill(nonceBytes); // Filling random numbers into the nonce
 
             using var chacha = new ChaCha20Poly1305(keyBytes);

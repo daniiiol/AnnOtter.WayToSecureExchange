@@ -37,7 +37,7 @@ namespace AnnOtter.WayToSecureExchange.Databases
         /// checks the current database settings. If an environment variable exists, it gets priority 1. The settings in appsettings.json have priority 2. If no settings are found, a SQLite database is activated and used.
         /// </summary>
         /// <param name="options">Passing the DbContextOptionsBuilder object for activating the supported database type.</param>
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -52,11 +52,11 @@ namespace AnnOtter.WayToSecureExchange.Databases
             
             if (string.IsNullOrEmpty(connectionString)) // For a local usage without external database
             {
-                options.UseSqlite($"Data Source={DbPath}");
+                optionsBuilder.UseSqlite($"Data Source={DbPath}");
             }
             else
             {
-                options.UseNpgsql(connectionString);
+                optionsBuilder.UseNpgsql(connectionString);
             }
         }
     }

@@ -46,7 +46,7 @@ namespace AnnOtter.WayToSecureExchange.Controllers
         public IActionResult Error()
         {
             var requestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-            _logger.LogWarning($"Error executed with RequestId: {requestId}. Requested ressource: {HttpContext.Request.Path} and QueryString: {HttpContext.Request.QueryString}");
+            _logger.LogWarning("Error executed with RequestId: {requestId}. Requested ressource: {HttpContext.Request.Path} and QueryString: {HttpContext.Request.QueryString}", requestId, HttpContext.Request.Path, HttpContext.Request.QueryString);
             return View(new ErrorViewModel { RequestId = requestId });
         }
     }

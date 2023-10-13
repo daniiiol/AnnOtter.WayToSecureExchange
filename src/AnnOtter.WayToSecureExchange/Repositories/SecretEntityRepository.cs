@@ -27,7 +27,7 @@ namespace AnnOtter.WayToSecureExchange.Repositories
             _logger = logger;
             _config = configuration;
 
-            ExecuteRetentionPolicy();
+            _ = ExecuteRetentionPolicy();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace AnnOtter.WayToSecureExchange.Repositories
             _logger = logger;
             _config = configuration;
 
-            ExecuteRetentionPolicy();
+            _ = ExecuteRetentionPolicy();
         }
 
         /// <inheritdoc/>
@@ -86,7 +86,7 @@ namespace AnnOtter.WayToSecureExchange.Repositories
         /// Uses the timespan configuration of "appSettings.json > Main > Retention Span" to delete all older entries directly from the database.
         /// The execution is kept in the logging on information level, in case of deleting data.
         /// </summary>
-        private async void ExecuteRetentionPolicy()
+        private async Task ExecuteRetentionPolicy()
         {
             var retention = _config.Value.RetentionSpan;
             if (retention.Ticks > 0)
@@ -96,7 +96,7 @@ namespace AnnOtter.WayToSecureExchange.Repositories
 
                 if(result > 0)
                 {
-                    _logger.LogInformation($"ExecuteRetentionPolicy with policy '{retention}' removes '{result}' rows.");
+                    _logger.LogInformation("ExecuteRetentionPolicy with policy '{retention}' removes '{result}' rows.", retention, result);
                 }
             }
         }

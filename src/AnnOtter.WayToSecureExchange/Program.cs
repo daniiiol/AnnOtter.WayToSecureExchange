@@ -25,7 +25,7 @@ builder.Services.AddRateLimiter(_ =>
     _.OnRejected = (context, _) =>
     {
         context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-        context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.");
+        context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.", cancellationToken: _);
 
         return new ValueTask();
     };
@@ -68,11 +68,14 @@ var loggerFactory = LoggerFactory.Create(
                 .SetMinimumLevel(LogLevel.Debug)
 );
 
+ILogger logger = loggerFactory.CreateLogger<Program>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
+    logger.LogInformation("Attention: DevMode active!");
     app.UseExceptionHandler("/Home/Error");
 }
 app.UseStaticFiles();
@@ -89,4 +92,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+logger.LogInformation("Application started.");
 app.Run();

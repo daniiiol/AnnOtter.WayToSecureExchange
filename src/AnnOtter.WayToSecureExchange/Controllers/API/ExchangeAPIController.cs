@@ -14,7 +14,7 @@ namespace AnnOtter.WayToSecureExchange.Controllers.API
     /// </summary>
     [Route("api/exchange")]
     [ApiController]
-    public class ExchangeAPIController : ControllerBase
+    public class ExchangeApiController : ControllerBase
     {
         private readonly ISecretEntityRepository _secretRepo;
         private readonly ILogger _logger;
@@ -26,7 +26,7 @@ namespace AnnOtter.WayToSecureExchange.Controllers.API
         /// <param name="logger">DI injected logging framework.</param>
         /// <param name="secretRepository">DI injected repository to manage the database.</param>
         /// <param name="configuration">DI injected EncryptionSettings instance.</param>
-        public ExchangeAPIController(ILogger<ExchangeAPIController> logger, ISecretEntityRepository secretRepository, IOptions<EncryptionSettings> configuration)
+        public ExchangeApiController(ILogger<ExchangeApiController> logger, ISecretEntityRepository secretRepository, IOptions<EncryptionSettings> configuration)
         {
             this._logger = logger;
             this._secretRepo = secretRepository;
@@ -62,7 +62,7 @@ namespace AnnOtter.WayToSecureExchange.Controllers.API
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, ex);
+                _logger.LogError("{ex.Message}", ex.Message);
                 return StatusCode(500);
             }
 
@@ -118,7 +118,7 @@ namespace AnnOtter.WayToSecureExchange.Controllers.API
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, ex);
+                _logger.LogError("{ex.Message}", ex.Message);
                 return StatusCode(500);
             }
 
@@ -188,12 +188,12 @@ namespace AnnOtter.WayToSecureExchange.Controllers.API
             }
             catch (InputDataInvalidException ex)
             {
-                _logger.LogError(ex.Message, ex);
+                _logger.LogError("{ex.Message}", ex.Message);
                 return CreateExceptionUploadModel(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, ex);
+                _logger.LogError("{ex.Message}", ex.Message);
                 return CreateExceptionUploadModel("Unknown issue. Please try again later.");
             }
         }
@@ -203,7 +203,7 @@ namespace AnnOtter.WayToSecureExchange.Controllers.API
         /// </summary>
         /// <param name="message">Error message.</param>
         /// <returns>A negative confirmation of secret upload.</returns>
-        private UploadConfirmationModel CreateExceptionUploadModel(string message)
+        private static UploadConfirmationModel CreateExceptionUploadModel(string message)
         {
             var resultModel = new UploadConfirmationModel
             {
