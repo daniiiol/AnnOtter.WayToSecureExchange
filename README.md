@@ -102,7 +102,7 @@ This section provides an overview of how the application facilitates the secure 
 
 1. **Confirmation by the API:** The server's API confirms the successful upload, and Alice can compare the SHA256 hash of the application server's response with her locally stored hash.
 
-1. **Secondary Encryption on the Server:** To prevent potential data leaks caused by database access, the application server further encrypts the received ciphertext using ChaCha20Poly1305. The 256 bit key for ChaCha20 is exclusively stored on the application server.
+1. **Secondary Encryption on the Server:** To prevent potential data leaks caused by database access, the application server further encrypts the received ciphertext using ChaCha20Poly1305. The 256 bit key for ChaCha20 and Poly1305 is exclusively stored on the application server.
 
 
 ### Sharing with Bob
