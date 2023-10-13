@@ -1,0 +1,89 @@
+@startuml
+
+!include theme/annotter-theme.puml
+
+title "Encryption Process"
+footer "AnnOtter - Way to Secure Exchange"
+
+actor Alice
+participant Frontend
+participant Backend
+database Database
+
+Alice -> Frontend : Start to create a secret
+activate Frontend
+Frontend --> Alice : Receive initial application
+
+Alice -> Frontend : Enter secret text
+
+Alice -> Frontend : Click generate
+
+Frontend -> Frontend : Generate a PBKDF2 DeriveKey
+note left
+  Salt: 8 bytes (random)
+  Key: 64 characters
+  Iterations: 1000
+  Hash: SHA-256
+end note
+
+Frontend -> Frontend : Encrypt the plaintext
+note left
+  DeriveKey (see above)
+  IV: 12 bytes (random)
+  Algo: AES-GCM
+end note
+
+Frontend -> Backend : Upload the ciphertext to the API endpoint
+activate Backend
+
+    alt Double-Encryption active
+        Backend -> Backend : Encrypt received ciphertext
+            note left
+            Key: 32 bytes
+            Nonce: 12 bytes (random)
+            Algo: ChaCha20Poly1305
+            end note
+        Backend -> Database : Store data in the database
+        activate Database
+            note right
+            Ciphertext: base64 string
+            Nonce: base64 string
+            Tag: base64 string
+            CreatedDate: DateTime.UtcNow
+            end note
+    else Double-Encryption not set
+        Backend -> Database : Store data in the database
+            note right
+            Ciphertext: base64 string
+            CreatedDate: DateTime.UtcNow
+            end note
+    end
+    
+    Database --> Backend : Success message
+
+    Backend --> Frontend : Feedback of upload
+        note left
+        UploadState: bool
+        Timestamp: DateTime.UtcNow
+        UploadMessage: string
+        UploadId: Guid
+        UploadOriginalHash: SHA256
+        end note
+
+Frontend -> Frontend : Check if the hash value matches the local hash
+
+    alt Successful case
+        Frontend -> Frontend : Generate the Share-URL
+            note left
+            Format: 
+            <origin>/exchange/
+            ?data=<id>#<key>-<salt>-<iv>
+            end note
+        Frontend --> Alice : Success box with Share-URL
+    else Error case
+        Frontend --> Alice: Error box with corresponding message.
+    end
+
+destroy Frontend
+
+@enduml

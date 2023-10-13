@@ -1,0 +1,87 @@
+@startuml
+
+!include theme/annotter-theme.puml
+
+title "Decryption Process"
+footer "AnnOtter - Way to Secure Exchange"
+
+actor Bob
+participant Frontend
+participant Backend
+database Database
+
+Bob -> Frontend : Accesses the received URL
+activate Frontend
+note left
+    Format: 
+    <origin>/exchange/
+    ?data=<id>#<key>-<salt>-<iv>
+end note
+
+Frontend -> Backend : Checks if a secret with the specified ID exists
+activate Backend
+
+Backend -> Database : Backend searches for the corresponding ID in the database
+
+alt ID found
+    Database --> Backend : Message that ID was found
+    Backend --> Frontend : Success message
+    Frontend -> Frontend : Enable Reveal Button
+
+else ID not found
+    Database --> Backend : Message that no ID was found
+    Backend --> Frontend : Not found message
+end
+
+Frontend --> Bob : Visual feedback
+
+Bob -> Frontend : Clicks on Reveal Button (Success case)
+
+Frontend -> Backend : Download command for the secret
+
+Backend -> Database : Backend selects the secret from the database
+
+alt ID found
+    Database --> Backend : Delivery of the secret
+        note right
+            Ciphertext: base64 string
+            Nonce: base64 string
+            Tag: base64 string
+        end note
+
+    alt Nonce & Tag available
+        Backend -> Backend : Decryption of the second encryption layer
+        note left
+            Ciphertext: base64 string
+            Key: 32 bytes
+            Nonce: 12 bytes
+            Tag: 16 bytes
+        end note
+    end
+        Backend -> Database : Deletion command of the secret in the database
+
+        Backend -> Frontend : Transmission of the secret
+        note left
+            UploadId: Guid
+            Data: ciphertext
+            Hash: SHA256
+        end note
+    
+        Frontend -> Frontend: Decryption of the first encryption layer
+        note left
+            Ciphertext: from Backend
+            Key: from hashtag URL
+            IV: from hashtag URL
+            Salt: from hashtag URL
+        end note
+
+        alt Decryption successful
+            Frontend --> Bob : Display plaintext
+        else Decryption unsuccessful
+            Frontend --> Bob : Display error case
+        end
+else ID not found
+    Database --> Backend : Message that no ID was found
+    Backend --> Frontend : Not found message
+end
+@enduml

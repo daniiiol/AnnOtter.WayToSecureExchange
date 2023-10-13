@@ -1,0 +1,86 @@
+skinparam BackgroundColor F9F9F9
+skinparam shadowing false
+skinparam RoundCorner 7
+skinparam ArrowColor cd5764
+skinparam FontColor 191919
+skinparam ArrowFontSize 10
+skinparam ArrowFontStyle italic
+skinparam SequenceLifeLineBorderColor 393939
+skinparam SequenceLifeLineBorderThickness 2
+skinparam SequenceLifeLineBackgroundColor aabacf
+skinparam SequenceGroupHeaderFontColor 191919
+skinparam SequenceGroupFontColor 393939
+skinparam SequenceGroupBorderColor 393939
+skinparam SequenceGroupBorderThickness 1
+skinparam SequenceGroupBackgroundColor f4d891
+skinparam SequenceGroupBodyBackgroundColor f4f2ee
+skinparam SequenceArrowThickness 1
+skinparam NoteFontSize 9
+
+skinparam sequenceDivider {
+    BorderColor 191919
+    BorderThickness 1
+    FontColor 191919
+}
+
+skinparam participant {
+    BackgroundColor 4b525b
+    BorderColor 191919
+    FontColor FFF
+    BorderThickness 1
+}
+
+skinparam database {
+    BackgroundColor 6a7481
+    BorderColor FFF
+    FontColor 191919
+}
+
+skinparam entity {
+    BackgroundColor EFBABC
+    BorderColor 191919
+    FontColor 191919
+}
+
+skinparam note {
+    BackgroundColor e5e5e5
+    BorderColor 191919
+    FontColor 191919
+    BorderThickness 1.5
+}
+
+skinparam actor {
+    BackgroundColor C9C9C9
+    BorderColor 191919
+    FontColor 191919
+}
+
+skinparam boundary {
+    BackgroundColor EFBABC
+    BorderColor 191919
+    FontColor 191919
+}
+
+skinparam control {
+    BackgroundColor EFBABC
+    BorderColor 191919
+    FontColor 191919
+}
+
+skinparam collections {
+    BackgroundColor c9c9c9
+    BorderColor 191919
+    FontColor 1E1E1E
+    BorderThickness 1.5
+}
+
+skinparam queue {
+    BackgroundColor c9c9c9
+    BorderColor 191919
+    FontColor 1E1E1E
+    BorderThickness 1.5
+}
+
+skinparam alt {
+    BackgroundColor f4efe2
+}
