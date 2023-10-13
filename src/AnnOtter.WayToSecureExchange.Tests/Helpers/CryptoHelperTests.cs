@@ -38,7 +38,7 @@ namespace AnnOtter.WayToSecureExchange.Tests.Helpers
         {
             // Arrange
             string plaintext = "This is a test message.";
-            byte[] keyBytes = new byte[32];
+            Span<byte> keyBytes = stackalloc byte[32];
             RandomNumberGenerator.Fill(keyBytes);
 
             string key = Convert.ToBase64String(keyBytes);
@@ -74,7 +74,7 @@ namespace AnnOtter.WayToSecureExchange.Tests.Helpers
         {
             // Arrange
             string plaintext = "This is a test message.";
-            byte[] keyBytes = new byte[32];
+            Span<byte> keyBytes = stackalloc byte[32];
             RandomNumberGenerator.Fill(keyBytes);
 
             string key = Convert.ToBase64String(keyBytes);
@@ -82,7 +82,7 @@ namespace AnnOtter.WayToSecureExchange.Tests.Helpers
             var encryptionResponse = CryptoHelper.EncryptChaCha20Poly1305(plaintext, key);
 
             // Modify the tag to simulate an invalid tag
-            encryptionResponse.Tag = Convert.ToBase64String(new byte[16]);
+            encryptionResponse.Tag = Convert.ToBase64String(stackalloc byte[16]);
 
             // Act and Assert
             Assert.ThrowsException<CryptographicException>(() =>
@@ -98,7 +98,7 @@ namespace AnnOtter.WayToSecureExchange.Tests.Helpers
             // Arrange
             var plaintext = new string('A', 1000000); // 1 MB plaintext
 
-            byte[] keyBytes = new byte[32];
+            Span<byte> keyBytes = stackalloc byte[32];
             RandomNumberGenerator.Fill(keyBytes);
 
             string key = Convert.ToBase64String(keyBytes);
@@ -115,9 +115,9 @@ namespace AnnOtter.WayToSecureExchange.Tests.Helpers
         public void ConcurrentEncryptChaCha20Poly1305()
         {
             // Arrange
-            byte[] keyBytes = new byte[32];
+            Span<byte> keyBytes = stackalloc byte[32];
             RandomNumberGenerator.Fill(keyBytes);
-            
+
             string key = Convert.ToBase64String(keyBytes);
 
             int numberOfThreads = 10;
