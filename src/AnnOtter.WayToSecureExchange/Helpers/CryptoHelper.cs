@@ -1,4 +1,5 @@
 ﻿using AnnOtter.WayToSecureExchange.Models.Cryptography;
+using System.Buffers;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -17,11 +18,11 @@ namespace AnnOtter.WayToSecureExchange.Helpers
         public static string GetSha256Hash(string inputString)
         {
             var encoder = new UTF8Encoding();
-            byte[] inputBytes = encoder.GetBytes(inputString);
-            byte[] hashBytes = SHA256.HashData(inputBytes);
+            ReadOnlySpan<byte> inputBytes = encoder.GetBytes(inputString);
+            ReadOnlySpan<byte> hashBytes = SHA256.HashData(inputBytes);
 
             var sb = new StringBuilder();
-            foreach (byte b in hashBytes)
+            foreach (var b in hashBytes)
             {
                 sb.Append(b.ToString("x2")); // "x2" specifies the hexadecimal formatting
             }
@@ -37,22 +38,25 @@ namespace AnnOtter.WayToSecureExchange.Helpers
         /// <returns>Base64 encoded encryption information such as ciphertext, nonce and generated tag.</returns>
         public static ChaCha20Poly1305EncryptionResponse EncryptChaCha20Poly1305(string plaintext, string key)
         {
-            byte[] plaintextBytes = Encoding.UTF8.GetBytes(plaintext);
+            ReadOnlySpan<byte> plaintextBytes = Encoding.UTF8.GetBytes(plaintext);
 
-            byte[] keyBytes = Convert.FromBase64String(key); // 32-Byte Key needed!
-            byte[] tagBytes = new byte[16];
-            byte[] nonceBytes = new byte[12];
+            ReadOnlySpan<byte> keyBytes = Convert.FromBase64String(key); // 32-Byte Key needed!
+            Span<byte> tagBytes = stackalloc byte[16];
+            Span<byte> nonceBytes = stackalloc byte[12];
 
             RandomNumberGenerator.Fill(nonceBytes); // Filling random numbers into the nonce
 
             using var chacha = new ChaCha20Poly1305(keyBytes);
 
-            byte[] ciphertext = plaintextBytes;
+            var ciphertextRent = ArrayPool<byte>.Shared.Rent(plaintextBytes.Length);
+            var ciphertext = ciphertextRent.AsSpan(..plaintextBytes.Length);
             chacha.Encrypt(nonceBytes, plaintextBytes, ciphertext, tagBytes, null);
 
             var nonceString = Convert.ToBase64String(nonceBytes);
             var ciphertextString = Convert.ToBase64String(ciphertext);
             var tagString = Convert.ToBase64String(tagBytes);
+
+            ArrayPool<byte>.Shared.Return(ciphertextRent);
 
             return new ChaCha20Poly1305EncryptionResponse()
             {
@@ -72,17 +76,21 @@ namespace AnnOtter.WayToSecureExchange.Helpers
         /// <returns>Decrypted a plaintext and encode it as UTF-8.</returns>
         public static string DecryptChaCha20Poly1305(string ciphertext, string nonce, string key, string tag)
         {
-            byte[] ciphertextBytes = Convert.FromBase64String(ciphertext);
-            byte[] keyBytes = Convert.FromBase64String(key);
-            byte[] nonceBytes = Convert.FromBase64String(nonce);
-            byte[] tagBytes = Convert.FromBase64String(tag);
+            ReadOnlySpan<byte> ciphertextBytes = Convert.FromBase64String(ciphertext);
+            ReadOnlySpan<byte> keyBytes = Convert.FromBase64String(key);
+            ReadOnlySpan<byte> nonceBytes = Convert.FromBase64String(nonce);
+            ReadOnlySpan<byte> tagBytes = Convert.FromBase64String(tag);
 
             using var chacha = new ChaCha20Poly1305(keyBytes);
-            byte[] plaintext = new byte[ciphertextBytes.Length];
+            var plaintextRent = ArrayPool<byte>.Shared.Rent(ciphertextBytes.Length);
+            var plaintextBytes = plaintextRent.AsSpan(..ciphertextBytes.Length);
 
-            chacha.Decrypt(nonceBytes, ciphertextBytes, tagBytes, plaintext, null);
+            chacha.Decrypt(nonceBytes, ciphertextBytes, tagBytes, plaintextBytes, null);
 
-            return Encoding.UTF8.GetString(plaintext);
+            var plainText = Encoding.UTF8.GetString(plaintextBytes);
+            ArrayPool<byte>.Shared.Return(plaintextRent);
+
+            return plainText;
         }
     }
 }
