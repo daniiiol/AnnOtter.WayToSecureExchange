@@ -244,8 +244,21 @@ function ShowGenerationErrorBox(message) {
  * @returns {Object}
  */
 function prepareSecretRequest(httpMethod, dataId) {
+    const allowedMethods = ['GET', 'HEAD'];
+    if (!allowedMethods.includes(httpMethod.toUpperCase())) {
+        throw new Error('Invalid HTTP method');
+    }
+
+    // Validate dataId against UUID v4 pattern
+    if (!dataId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)) {
+        throw new Error('Invalid Data-ID format');
+    }
+
     const host = window.location.protocol + "//" + window.location.host;
-    const url = host + '/api/exchange?data=' + dataId;
+
+    const params = new URLSearchParams();
+    params.append('data', dataId);
+    const url = `${host}/api/exchange?${params.toString()}`;
 
     return {
         requestOptions: {

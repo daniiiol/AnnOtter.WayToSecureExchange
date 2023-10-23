@@ -68,14 +68,14 @@ If you want to compile and run the application locally, you can do so with the f
 Navigate to `./src/AnnOtter.WayToSecureExchange/` and execute the following command in your favorite terminal application:
 
 ```bash
-docker build . -t annotter.way2secexchange:latest
+docker build . -t annotter.way2secexchange:dev
 ```
 
 #### Start the application (local image)
 Now, start the web application with the following command:
 
 ```bash
-docker run -p 8082:8080 annotter.way2secexchange:latest
+docker run -p 8082:8080 annotter.way2secexchange:dev
 ```
 
 Launch your browser on http://localhost:8082
