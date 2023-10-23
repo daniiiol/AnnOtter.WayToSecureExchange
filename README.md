@@ -153,7 +153,7 @@ The choice of encryption algorithm is based on the requirements of data transmis
 
 ### Q: How likely is it that a URL can be discovered through brute-forcing?
 
-**A:** At present, we do not foresee the URL being feasibly discovered through brute-force methods. This is due to the fact that an attacker would need to know a data ID existing within the system, which corresponds to a standard GUID. Even if they were to discover an existing GUID, they would additionally need to possess the corresponding 64-character key, the 16-character salt, and the 24-character IV to generate a correct link in that combination. Based on current knowledge, we do not consider this to be a viable method of attack.
+**A:** At present, we do not foresee the URL being feasibly discovered through brute-force methods. This is due to the fact that an attacker would need to know a data ID existing within the system, which corresponds to a standard GUID. Even if they were to discover an existing GUID, they would additionally need to possess the corresponding 64-character key and the 24-character IV to generate a correct link in that combination. Based on current knowledge, we do not consider this to be a viable method of attack.
 
 ### Q: What is the purpose of this project?
 **A:** The primary objective of this project was to create a simple yet effective system for securely exchanging sensitive information. Many organizations often transmit various confidential data through insecure communication channels such as chat platforms or email systems, potentially exposing them to access by system administrators. With this small-scale web project, our aim was to mitigate this threat and provide a more secure means of data exchange.
