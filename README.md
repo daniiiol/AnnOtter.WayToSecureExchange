@@ -93,16 +93,16 @@ This section provides an overview of how the application facilitates the secure 
 #### Generating and Encrypting the Secret
 1. **Alice's Input:** Alice begins the process by entering her secret information into the application's text field.
 
-1. **Generation of a Random Key:** When Alice clicks the "Generate" button, a 64-character random passphrase is generated and the application creates a PBKDF2-based crypto key with SHA256 and 1000 iterations.
+1. **Generation of a Random Key:** When Alice clicks the "Generate" button, a random CryptoKey is generated using the `generateKey()` Method of [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/generateKey).
 
-1. **AES-GCM Encryption:** This random key is utilized to encrypt Alice's secret text using the AES-GCM encryption method. Notably, all these operations are conducted within the user's web browser, leveraging the Web Crypto API.
+1. **AES-GCM Encryption:** This random CryptoKey is utilized to encrypt Alice's secret text using the AES-GCM algorithm. Notably, all these operations are conducted within the user's web browser, leveraging the [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API).
 
 #### Uploading and Storing the Encrypted Data
 1. **Uploading to the Application Server:** The encrypted ciphertext is then uploaded to an application server.
 
 1. **Confirmation by the API:** The server's API confirms the successful upload, and Alice can compare the SHA256 hash of the application server's response with her locally stored hash.
 
-1. **Secondary Encryption on the Server:** To prevent potential data leaks caused by database access, the application server further encrypts the received ciphertext using ChaCha20Poly1305. The 256 bit key for ChaCha20 and Poly1305 is exclusively stored on the application server.
+1. **Secondary Encryption on the Server:** To prevent potential data leaks caused by database access, the application server further encrypts the received ciphertext using [ChaCha20Poly1305](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.chacha20poly1305?view=net-7.0). The 256 bit key for ChaCha20 and Poly1305 is exclusively stored on the application server.
 
 
 ### Sharing with Bob
@@ -153,7 +153,7 @@ The choice of encryption algorithm is based on the requirements of data transmis
 
 ### Q: How likely is it that a URL can be discovered through brute-forcing?
 
-**A:** At present, we do not foresee the URL being feasibly discovered through brute-force methods. This is due to the fact that an attacker would need to know a data ID existing within the system, which corresponds to a standard GUID. Even if they were to discover an existing GUID, they would additionally need to possess the corresponding 64-character key and the 24-character IV to generate a correct link in that combination. Based on current knowledge, we do not consider this to be a viable method of attack.
+**A:** At present, we do not foresee the URL being feasibly discovered through brute-force methods. This is due to the fact that an attacker would need to know a data ID existing within the system, which corresponds to a standard GUID. Even if they were to discover an existing GUID, they would additionally need to possess the corresponding 64-character key, the 16-character salt, and the 24-character IV to generate a correct link in that combination. Based on current knowledge, we do not consider this to be a viable method of attack.
 
 ### Q: What is the purpose of this project?
 **A:** The primary objective of this project was to create a simple yet effective system for securely exchanging sensitive information. Many organizations often transmit various confidential data through insecure communication channels such as chat platforms or email systems, potentially exposing them to access by system administrators. With this small-scale web project, our aim was to mitigate this threat and provide a more secure means of data exchange.
