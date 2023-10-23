@@ -1,18 +1,53 @@
 ﻿// Basic AES-GCM logic comes from enyachoke: https://gist.githubusercontent.com/enyachoke/5c60f5eebed693d9b4bacddcad693b47/raw/4d9f2acf7401002bdc065c2405a020e42565876c/aes.js
 
 /**
- * Creates a random 64 char string. 
- * (A-Z, a-z and following special chars: +,-,/,.)
- * @returns {String}
+ * Generates a new AES-GCM 256 Key
+ * @returns {CryptoKey}
  */
-function generateRandomKey() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+_/.';
-    let randomKey = '';
-    for (let i = 0; i < 64; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        randomKey += characters.charAt(randomIndex);
-    }
-    return randomKey;
+async function generateKey() {
+    let key = await crypto.subtle.generateKey(
+        {
+            name: "AES-GCM",
+            length: 256
+        },
+        true,
+        ["encrypt", "decrypt"]
+    );
+
+    return key;
+}
+
+/**
+ * Exports a key to a hex string
+ * @param {any} key
+ * @returns {string}
+ */
+async function exportKey2hex(key) {
+    let exportedKeyBuffer = await crypto.subtle.exportKey('raw', key);
+    let exportedKeyArray = new Uint8Array(exportedKeyBuffer);
+    return Array.from(exportedKeyArray).map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Imports a key from a hex string
+ * @param {string} hexKey
+ * @returns {CryptoKey}
+ */
+async function importKeyFromHex(hexKey) {
+    let buffer = hex2buf(hexKey);
+
+    let key = await crypto.subtle.importKey(
+        'raw',
+        buffer,
+        {
+            name: "AES-GCM",
+            length: 256
+        },
+        true,
+        ["decrypt"]
+    );
+
+    return key;
 }
 
 /**
@@ -70,31 +105,6 @@ function buf2hex(buffer) {
 }
 
 /**
- * Given a passphrase, this generates a crypto key
- * using `PBKDF2` with SHA256 and 1000 iterations.
- * If no salt is given, a new one is generated.
- * The return value is an array of `[key, salt]`.
- * @param {String} passphrase 
- * @param {UInt8Array} salt [salt=random bytes]
- * @returns {Promise<[CryptoKey,UInt8Array]>} 
- */
-function deriveKey(passphrase, salt) {
-    salt = salt || crypto.getRandomValues(new Uint8Array(8));
-    return crypto.subtle
-        .importKey("raw", str2buf(passphrase), "PBKDF2", false, ["deriveKey"])
-        .then(key =>
-            crypto.subtle.deriveKey(
-                { name: "PBKDF2", salt, iterations: 1000, hash: "SHA-256" },
-                key,
-                { name: "AES-GCM", length: 256 },
-                false,
-                ["encrypt", "decrypt"],
-            ),
-        )
-        .then(key => [key, salt]);
-}
-
-/**
  * Given a passphrase and some plaintext, this derives a key
  * (generating a new salt), and then encrypts the plaintext with the derived
  * key using AES-GCM. The ciphertext, salt, and iv are hex encoded.
@@ -102,17 +112,14 @@ function deriveKey(passphrase, salt) {
  * @param {String} plaintext
  * @returns {Promise<String>} 
  */
-async function encrypt(passphrase, plaintext) {
+async function encrypt(key, plaintext) {
     const ivValue = crypto.getRandomValues(new Uint8Array(12));
-    const saltValue = crypto.getRandomValues(new Uint8Array(8));
     const data = str2buf(plaintext);
 
-    const derivedKey = await deriveKey(passphrase, saltValue);
-    const ciphertextValue = await crypto.subtle.encrypt({ name: "AES-GCM", iv: ivValue }, derivedKey[0], data);
+    const ciphertextValue = await crypto.subtle.encrypt({ name: "AES-GCM", iv: ivValue }, key, data);
 
     return {
         iv: buf2hex(ivValue),
-        salt: buf2hex(saltValue),
         ciphertext: buf2hex(ciphertextValue)
     }
 }
@@ -126,12 +133,11 @@ async function encrypt(passphrase, plaintext) {
  * @param {String} ciphertext
  * @returns {Promise<String>}
  */
-function decrypt(passphrase, salt, iv, ciphertext) {
-    const saltValue = hex2buf(salt);
+async function decrypt(hexKey, iv, ciphertext) {
+    const key = await importKeyFromHex(hexKey)
     const ivValue = hex2buf(iv);
     const dataValue = hex2buf(ciphertext);
 
-    return deriveKey(passphrase, saltValue)
-        .then(([key]) => crypto.subtle.decrypt({ name: "AES-GCM", iv: ivValue }, key, dataValue))
+    return crypto.subtle.decrypt({ name: "AES-GCM", iv: ivValue }, key, dataValue)
         .then(v => buf2str(new Uint8Array(v)));
 }
