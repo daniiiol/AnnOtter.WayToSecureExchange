@@ -72,7 +72,6 @@ alt ID found
             Ciphertext: from Backend
             Key: from hashtag URL
             IV: from hashtag URL
-            Salt: from hashtag URL
         end note
 
         alt Decryption successful

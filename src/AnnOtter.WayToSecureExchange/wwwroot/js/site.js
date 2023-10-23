@@ -158,7 +158,7 @@ async function generateASecureExchange() {
     try {
         if (plainData && plainData.value) {
             const textToEncrypt = plainData.value;
-            const key = generateRandomKey();
+            const key = await generateKey();
             const encryptedData = await encrypt(key, textToEncrypt);
             const apiResponse = await UploadCiphertext(encryptedData.ciphertext);
 
@@ -173,8 +173,9 @@ async function generateASecureExchange() {
                     ShowGenerationErrorBox("Mismatch of SHA256 detected. Do you have a man in the middle? Local-Hash: " + localHash + " / Server-Hash: " + serverHash);
                 }
                 else {
+                    const exportedKey = await exportKey2hex(key);
                     const host = window.location.protocol + "//" + window.location.host;
-                    const link = host + "/exchange/?data=" + responseJson.uploadId + "#" + key + "-" + encryptedData.salt + "-" + encryptedData.iv;
+                    const link = host + "/exchange/?data=" + encodeURIComponent(responseJson.uploadId) + "#" + encodeURIComponent(exportedKey) + "-" + encodeURIComponent(encryptedData.iv);
                     ShowGenerationSuccessBox(link, localHash, serverHash);
                 }
 
@@ -404,7 +405,7 @@ async function decryptDataResponse(responseData) {
         const responseObject = JSON.parse(responseData);
         const hashValue = window.location.hash.replace("#", "");
         const decryptKeyData = hashValue.split("-");
-        const decryptedText = await decrypt(decryptKeyData[0], decryptKeyData[1], decryptKeyData[2], responseObject.data);
+        const decryptedText = await decrypt(decryptKeyData[0], decryptKeyData[1], responseObject.data);
         const localHash = await sha256(responseObject.data);
 
         updateFrontendAfterDecryption(decryptedText, responseObject.hash, localHash);

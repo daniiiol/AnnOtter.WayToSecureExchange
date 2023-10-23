@@ -18,17 +18,14 @@ Alice -> Frontend : Enter secret text
 
 Alice -> Frontend : Click generate
 
-Frontend -> Frontend : Generate a PBKDF2 DeriveKey
+Frontend -> Frontend : Generate a CryptoKey
 note left
-  Salt: 8 bytes (random)
-  Key: 64 characters
-  Iterations: 1000
-  Hash: SHA-256
+  Algo: AES-GCM-256
 end note
 
 Frontend -> Frontend : Encrypt the plaintext
 note left
-  DeriveKey (see above)
+  CryptoKey (see above)
   IV: 12 bytes (random)
   Algo: AES-GCM
 end note
@@ -77,7 +74,7 @@ Frontend -> Frontend : Check if the hash value matches the local hash
             note left
             Format: 
             <origin>/exchange/
-            ?data=<id>#<key>-<salt>-<iv>
+            ?data=<id>#<key>-<iv>
             end note
         Frontend --> Alice : Success box with Share-URL
     else Error case
