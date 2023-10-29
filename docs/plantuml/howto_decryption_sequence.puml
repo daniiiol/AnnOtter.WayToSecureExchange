@@ -15,7 +15,7 @@ activate Frontend
 note left
     Format: 
     <origin>/exchange/
-    ?data=<id>#<key>-<salt>-<iv>
+    ?data=<id>#<key>-<iv>
 end note
 
 Frontend -> Backend : Checks if a secret with the specified ID exists
