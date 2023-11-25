@@ -85,7 +85,7 @@ namespace AnnOtter.WayToSecureExchange.Tests.Helpers
             encryptionResponse.Tag = Convert.ToBase64String(stackalloc byte[16]);
 
             // Act and Assert
-            Assert.ThrowsException<CryptographicException>(() =>
+            Assert.ThrowsException<AuthenticationTagMismatchException>(() =>
             {
                 CryptoHelper.DecryptChaCha20Poly1305(encryptionResponse.Ciphertext, encryptionResponse.Nonce, key, encryptionResponse.Tag);
             });
