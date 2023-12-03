@@ -133,6 +133,12 @@ In the event that the local keys are incorrect or if someone has intercepted the
 
 The application allows you to configure the "retention time" for secrets. This feature enables the automatic deletion of secrets that have exceeded the specified retention time on the server.
 
+### Protect generated URL
+
+In this section of the project, we focus on securing the generated URL using AES-GCM encryption with a generated key. The primary objective of this function is to ensure that the URL can be safely transmitted over an unsecured line. The encrypted URL will be inaccessible without an additional key, which is necessary to reveal the actual Secret Exchange URL. This approach enhances the security of the URL, making it resilient against intercepts and unauthorized access during transmission.
+
+![Decryption Sequence Diagram.](./docs/plantuml/export/howto_url_protection_encryption_sequence.svg)
+
 ## FAQ
 
 ### Q: Is this application really secure?

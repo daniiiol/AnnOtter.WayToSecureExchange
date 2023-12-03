@@ -11,6 +11,20 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
+    const copyKeyButton = document.getElementById("copyKeyButton");
+    if (copyKeyButton) {
+        copyKeyButton.addEventListener('click', function () {
+            copyToClipboard('protectUrlPassword');
+        });
+    }
+
+    const refreshKeyButton = document.getElementById("refreshKeyButton");
+    if (refreshKeyButton) {
+        refreshKeyButton.addEventListener('click', function () {
+            initializeUrlProtectionField(true);
+        });
+    }
+
     const copyErrorButton = document.getElementById("copyErrorButton");
     if (copyErrorButton) {
         copyErrorButton.addEventListener('click', function () {
@@ -52,6 +66,56 @@ document.addEventListener('DOMContentLoaded', async function () {
             resetASecureExchange();
         });
     }
+
+    const protectUrlSwitcher = document.getElementById("protectUrl");
+    if (protectUrlSwitcher) {
+        protectUrlSwitcher.addEventListener('click', function () {
+
+            if (protectUrlSwitcher.hasAttribute('checked')) {
+                protectUrlSwitcher.removeAttribute('checked');
+            }
+            else {
+                protectUrlSwitcher.setAttribute('checked','checked');
+            }
+
+            initializeUrlProtectionField(protectUrlSwitcher.hasAttribute('checked'));
+        });
+    }
+
+    const keyInput = document.getElementById("keyInput");
+    if (keyInput) {
+        keyInput.addEventListener("keypress", (event) => {
+            console.log(event.key);
+            if (event.code == 'Enter') {
+                unprotectUrlAndGoTo();
+            }
+        });
+    }
+
+    const decryptUrlButton = document.getElementById("decryptUrlButton");
+    if (decryptUrlButton) {
+        decryptUrlButton.addEventListener('click', function () {
+            unprotectUrlAndGoTo();
+        });
+    }
+
+    // Protect View
+    if (window.location.pathname.startsWith("/protect")) {
+
+        const hashString = window.location.hash;
+        const keyInput = document.getElementById("keyInput")
+
+        if (keyInput && hashString.startsWith("#P-")) {
+            const decryptUrlButton = document.getElementById("decryptUrlButton");
+            decryptUrlButton.disabled = '';
+        }
+        else {
+            const urlInvalidMessage = document.getElementById("urlInvalidMessage")
+            urlInvalidMessage.style.display = '';
+            keyInput.disabled = 'disabled';
+            decryptUrlButton.disabled = 'disabled';
+        }
+    }
         
     // Exchange View
     if (window.location.pathname.startsWith("/exchange")) {
@@ -83,6 +147,57 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 });
+
+/**
+ * Try to unprotect the URL and go to the secret exchange address
+ */
+async function unprotectUrlAndGoTo() {
+
+    const hashString = window.location.hash;
+    const keyInput = document.getElementById("keyInput")
+
+    if (keyInput && hashString.startsWith("#P-")) {
+        const keyInvalidMessage = document.getElementById("keyInvalidMessage");
+        keyInvalidMessage.style.display = 'none';
+
+        const hashValue = window.location.hash.replace("#P-", "");
+        const decryptKeyData = hashValue.split("-");
+
+        const decryptUrlButton = document.getElementById("decryptUrlButton");
+        decryptUrlButton.disabled = '';
+
+        try {
+            const decryptedText = await decrypt(keyInput.value, decryptKeyData[1], decryptKeyData[0]);
+            const host = window.location.protocol + "//" + window.location.host;
+            window.location.href = host + "/exchange/" + decryptedText;
+
+        } catch (e) {
+            keyInvalidMessage.style.display = '';
+        }
+    }
+}
+
+/**
+ * Show or Hide the URL Protection PasswordField
+ * @param {boolean} checked
+ */
+async function initializeUrlProtectionField(checked) {
+    const protectUrlPasswordBox = document.getElementById("protectUrlPasswordBox");
+    const protectUrlPassword = document.getElementById("protectUrlPassword");
+
+    if (protectUrlPasswordBox) {
+        if (checked) {
+            protectUrlPasswordBox.style.display = '';
+            const key = await generateKey();
+            const exportedKey = await exportKey2hex(key);
+            protectUrlPassword.value = exportedKey
+        }
+        else {
+            protectUrlPasswordBox.value = '';
+            protectUrlPasswordBox.style.display = 'none';
+        }
+    }
+}
 
 /**
  * Extracts a specific GET parameter from the URL.
@@ -121,6 +236,10 @@ function countChars() {
         dataCounter.className = 'counter warning';
         encryptDataButton.disabled = 'disabled';
     }
+    else if (countValue == 0) {
+        dataCounter.className = 'counter';
+        encryptDataButton.disabled = 'disabled';
+    }
     else {
         dataCounter.className = 'counter';
         encryptDataButton.disabled = '';
@@ -138,15 +257,28 @@ function resetASecureExchange() {
     const encryptDataButton = document.getElementById("encryptDataButton");
     const resultboxError = document.getElementById("resultboxError");
     const errorMessage = document.getElementById("errorMessage");
-
+    const protectUrl = document.getElementById("protectUrl");
+    const refreshKeyButton = document.getElementById("refreshKeyButton");
+    const protectUrlPasswordBox = document.getElementById("protectUrlPasswordBox");
+    
     plainData.value = '';
     plainData.disabled = '';
     encryptedKeyUrl.value = '';
     resultbox.style.display = 'none';
     encryptDataButton.style.display = '';
+    encryptDataButton.disabled = 'disabled';
     resetDataButton.style.display = 'none';
     resultboxError.style.display = 'none';
     errorMessage.value = "<ExceptionText>";
+
+    if (protectUrlPasswordBox.style.display == '') {
+        initializeUrlProtectionField(true);
+    }
+
+    countChars();
+
+    protectUrl.disabled = '';
+    refreshKeyButton.style.display = '';
 }
 
 /**
@@ -175,7 +307,20 @@ async function generateASecureExchange() {
                 else {
                     const exportedKey = await exportKey2hex(key);
                     const host = window.location.protocol + "//" + window.location.host;
-                    const link = host + "/exchange/?data=" + encodeURIComponent(responseJson.uploadId) + "#" + encodeURIComponent(exportedKey) + "-" + encodeURIComponent(encryptedData.iv);
+                    let urlParameters = "?data=" + encodeURIComponent(responseJson.uploadId) + "#" + encodeURIComponent(exportedKey) + "-" + encodeURIComponent(encryptedData.iv);
+                    let urlController = "exchange";
+
+                    const protectUrlPassword = document.getElementById("protectUrlPassword");
+                    const protectUrlSwitcher = document.getElementById("protectUrl");
+
+                    if (protectUrlSwitcher.hasAttribute('checked') && protectUrlPassword.value) {
+                        const key = await importKeyFromHex(protectUrlPassword.value);
+                        const encryptedUrl = await encrypt(key, urlParameters);
+                        urlParameters = "#P-" + encryptedUrl.ciphertext + "-" + encryptedUrl.iv
+                        urlController = "protect";
+                    }
+
+                    const link = host + "/" + urlController + "/" + urlParameters
                     ShowGenerationSuccessBox(link, localHash, serverHash);
                 }
 
@@ -208,6 +353,8 @@ function ShowGenerationSuccessBox(link, localHash, serverHash) {
     const resultbox = document.getElementById("resultbox");
     const localHashEncrypted = document.getElementById("localHashEncrypted");
     const serverHashEncrypted = document.getElementById("serverHashEncrypted");
+    const refreshKeyButton = document.getElementById("refreshKeyButton");
+    const protectUrl = document.getElementById("protectUrl");
 
     localHashEncrypted.innerText = localHash;
     serverHashEncrypted.innerText = serverHash;
@@ -216,6 +363,8 @@ function ShowGenerationSuccessBox(link, localHash, serverHash) {
     encryptDataButton.style.display = 'none';
     resultbox.style.display = '';
     resultboxError.style.display = 'none';
+    refreshKeyButton.style.display = 'none';
+    protectUrl.disabled = 'disabled';
 
     encryptedKeyUrl.value = link;
 }

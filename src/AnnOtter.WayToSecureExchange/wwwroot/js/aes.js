@@ -44,7 +44,7 @@ async function importKeyFromHex(hexKey) {
             length: 256
         },
         true,
-        ["decrypt"]
+        ["encrypt", "decrypt"]
     );
 
     return key;
@@ -108,7 +108,7 @@ function buf2hex(buffer) {
  * Given a passphrase and some plaintext, this derives a key
  * (generating a new salt), and then encrypts the plaintext with the derived
  * key using AES-GCM. The ciphertext, salt, and iv are hex encoded.
- * @param {String} passphrase 
+ * @param {String} key 
  * @param {String} plaintext
  * @returns {Promise<String>} 
  */

@@ -67,6 +67,16 @@
         public string? HomeCreateNewSecret { get; set; }
 
         /// <summary>
+        /// Gets or sets the label HomeProtectUrlSwitcherText on the rendered view.
+        /// </summary>
+        public string? HomeProtectUrlSwitcherText { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label HomeProtectUrlInformationText on the rendered view.
+        /// </summary>
+        public string? HomeProtectUrlInformationText { get; set; }
+
+        /// <summary>
         /// Gets or sets the label ExchangeLead_Part1 on the rendered view.
         /// </summary>
         public string? ExchangeLead_Part1 { get; set; }
@@ -110,5 +120,25 @@
         /// Gets or sets the label ExchangeSuccessHashLocal on the rendered view.
         /// </summary>
         public string? ExchangeSuccessHashLocal { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label ProtectLead on the rendered view.
+        /// </summary>
+        public string? ProtectLead { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label ProtectConfirmButton on the rendered view.
+        /// </summary>
+        public string? ProtectConfirmButton { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label ProtectInvalidKeyText on the rendered view.
+        /// </summary>
+        public string? ProtectInvalidKeyText { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label ProtectInvalidUrlText on the rendered view.
+        /// </summary>
+        public string? ProtectInvalidUrlText { get; set; }
     }
 }

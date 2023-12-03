@@ -1,0 +1,56 @@
+@startuml
+
+!include theme/annotter-theme.puml
+
+title "URL Protection Process"
+footer "AnnOtter - Way to Secure Exchange"
+
+actor Alice
+participant Frontend
+
+Alice -> Frontend : Start to create a secret
+activate Frontend
+Frontend --> Alice : Receive initial application
+
+Alice -> Frontend : Enter secret text
+
+Alice -> Frontend : Activate URL protection
+
+opt Shuffle Key
+Alice -> Frontend : Click on refresh key button
+end 
+
+Frontend -> Alice : Receive URL encryption key
+    note right
+    CryptoKey for AES-GCM-256
+    end note
+
+Alice -> Frontend : Click generate
+
+...
+
+Frontend -> Frontend : Generate the Share-URL
+    note left
+    Format: 
+    <origin>/exchange/
+    ?data=<id>#<key>-<iv>
+    end note
+
+Frontend -> Frontend : Encrypt the UrlParam Part with CryptoKey
+    note left
+    CryptoKey (see above)
+    IV: 12 bytes (random)
+    Algo: AES-GCM
+    end note
+
+Frontend -> Frontend : Generate protected Share-URL
+    note left
+    Format: 
+    <origin>/protect/#P-<ciphertext>-<iv>
+    end note
+
+Frontend --> Alice : Success box with Share-URL
+
+destroy Frontend
+
+@enduml

@@ -1,0 +1,33 @@
+﻿@using AnnOtter.WayToSecureExchange.Models.ViewModels;
+@model DefaultViewModel;
+
+@{
+    ViewData["Title"] = "Unprotect your secret url";
+}
+
+<h1>@Model.Labels.MainTitle</h1>
+<p class="lead">
+    @Model.Labels.ProtectLead
+</p>
+
+<div class="card border-dark">
+    <div class="card-body">
+        @* Key Input Element *@
+        <div class="input-group spacebox">
+            <span class="input-group-text"><i id="statusIcon" class="fa-solid fa-key"></i></span>
+            <input id="keyInput" class="form-control center" aria-label="key" placeholder="Enter your key here" />
+        </div>
+
+        @* Confirm Button *@
+        <div class="col-auto">
+            <button id="decryptUrlButton" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.ProtectConfirmButton</button>
+        </div>
+
+        @* Error Box *@
+        <div id="infoArea">
+            <p class="warning" id="keyInvalidMessage" style="display:none;"><i class="fa-solid fa-circle-exclamation warning-extreme"></i> <i>@Model.Labels.ProtectInvalidKeyText</i></p>
+            <p class="warning" id="urlInvalidMessage" style="display:none;"><i class="fa-solid fa-circle-exclamation warning-extreme"></i> <i>@Model.Labels.ProtectInvalidUrlText</i></p>
+        </div>
+    </div>
+    
+</div>
