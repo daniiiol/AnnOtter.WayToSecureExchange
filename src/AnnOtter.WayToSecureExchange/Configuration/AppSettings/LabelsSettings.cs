@@ -140,5 +140,10 @@
         /// Gets or sets the label ProtectInvalidUrlText on the rendered view.
         /// </summary>
         public string? ProtectInvalidUrlText { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label ProtectKeyInputPlaceholder on the rendered view.
+        /// </summary>
+        public string? ProtectKeyInputPlaceholder { get; set; }
     }
 }
