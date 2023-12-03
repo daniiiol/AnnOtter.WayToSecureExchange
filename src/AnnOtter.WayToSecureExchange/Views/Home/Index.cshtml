@@ -12,31 +12,49 @@
 
 <div class="card border-dark">
     <div class="card-body">
+
+        @* Plaintext Box *@
         <div class="input-group spacebox">
-            <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
+            <span class="input-group-text"><i class="fa-solid fa-message"></i></span>
             <textarea id="plaintextData" class="form-control" aria-label="key" rows="10"></textarea> <p id="dataCounter" class="counter">0 / 2000</p>
         </div>
 
-        <div class="col-auto">
-            <button id="encryptDataButton" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.HomeGenerateButton</button>
+        @* Protect Password Switcher *@
+        <div class="spacebox form-check form-switch left-align">
+            <input id="protectUrl" class="form-check-input" type="checkbox" aria-label="ProtectUrl" /> <label class="form-check-label" for="protectUrl">@Model.Labels.HomeProtectUrlSwitcherText</label>
         </div>
 
+        @* Protect URL Password *@
+        <div class="input-group spacebox topSpace" style="display:none;" id="protectUrlPasswordBox">
+            <span class="input-group-text"><i class="fa-solid fa-key"></i></span><input id="protectUrlPassword" disabled="disabled" type="text" class="form-control" aria-label="key" placeholder="Password" /><span class="input-group-text copyElement" id="refreshKeyButton"><i class="fa-solid fa-arrows-rotate"></i></span><span class="input-group-text copyElement" id="copyKeyButton"><i class="fa-solid fa-copy"></i></span><p id="dataCounter" class="counter">&nbsp;</p>
+
+            <div class="input-group topSpace" id="leadText">
+                <p class="info" id="hintWarning"><i class="fa-solid fa-circle-exclamation info-extreme"></i> <i>@Model.Labels.HomeProtectUrlInformationText</i></p>
+            </div>
+        </div>
+
+        @* Generate Button *@
+        <div class="col-auto">
+            <button id="encryptDataButton" disabled="disabled" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.HomeGenerateButton</button>
+        </div>
+
+        @* Resultbox *@
         <div class="input-group spacebox" id="resultbox" style="display:none;">
-            <div class="input-group resultLeadElement" id="leadElement">
+            <div class="input-group topSpace" id="leadElement">
                 <h2 class="lead resultLeadTitle">
                     <i class="fa-solid fa-check checkSuccess"></i> @Model.Labels.HomeResultSuccessTitle
                 </h2>
 
-                <div class="input-group resultLeadElement" id="leadText">
+                <div class="input-group topSpace" id="leadText">
                     <p>@Model.Labels.HomeResultSuccessText:</p>
                 </div>
             </div>
 
             <span class="input-group-text"><i class="fa-solid fa-link"></i></span>
             <input id="encryptedKeyUrl" class="form-control input-success" aria-label="link" disabled="disabled" value="https://..." />
-            <span class="input-group-text copyElement" id="copyUrlButton""><i class="fa-solid fa-copy"></i></span>
+            <span class="input-group-text copyElement" id="copyUrlButton"><i class="fa-solid fa-copy"></i></span>
 
-            <div class="input-group resultLeadElement">
+            <div class="input-group topSpace">
                 <p>@Model.Labels.HomeResultSuccessHashCheckText:</p>
                 <ul>
                     <li><i class="fa-regular fa-window-maximize"></i></i> @Model.Labels.HomeResultSuccessHashLocal: <code id="localHashEncrypted">null</code> [SHA-256]</li>
@@ -45,13 +63,14 @@
             </div>
         </div>
 
+        @* Error Box *@
         <div class="input-group spacebox" id="resultboxError" style="display:none;">
-            <div class="input-group resultLeadElement" id="leadElement">
+            <div class="input-group topSpace" id="leadElement">
                 <h2 class="lead resultLeadTitle">
                     <i class="fa-solid fa-circle-exclamation warning"></i> @Model.Labels.HomeResultFailedTitle
                 </h2>
 
-                <div class="input-group resultLeadElement" id="leadText">
+                <div class="input-group topSpace" id="leadText">
                     <p>@Model.Labels.HomeResultFailedText:</p>
                 </div>
             </div>
@@ -61,6 +80,7 @@
             <span class="input-group-text copyElement" id="copyErrorButton"><i class="fa-solid fa-copy"></i></span>
         </div>
 
+        @* Reset Button *@
         <div class="col-auto" id="resetDataButton" style="display:none;">
             <hr />
             <button id="resetExchangeButton" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.HomeCreateNewSecret</button>

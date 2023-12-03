@@ -13,7 +13,7 @@ h2.resultLeadTitle {
     margin-top: 30px;
 }
 
-.resultLeadElement {
+.topSpace {
     margin-top: 20px;
 }
 
@@ -89,4 +89,8 @@ li {
 
 textarea.center {
     text-align: center !important;
+}
+
+.left-align {
+    text-align: left !important;
 }
