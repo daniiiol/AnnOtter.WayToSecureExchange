@@ -28,8 +28,14 @@ namespace AnnOtter.WayToSecureExchange.Databases
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
+            var dataFolderPath = Path.Join(path, "ao_exchange_data");
 
-            DbPath = Path.Join(path, "ao_exchangedatabase.db");
+            if (!Directory.Exists(dataFolderPath))
+            {
+                Directory.CreateDirectory(dataFolderPath);
+            }
+
+            DbPath = Path.Join(dataFolderPath, "ao_exchangedatabase.db");
             Database.Migrate();
         }
 
