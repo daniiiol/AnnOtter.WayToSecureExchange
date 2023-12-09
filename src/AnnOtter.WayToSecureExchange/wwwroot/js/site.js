@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     const keyInput = document.getElementById("keyInput");
     if (keyInput) {
         keyInput.addEventListener("keypress", (event) => {
-            console.log(event.key);
             if (event.code == 'Enter') {
                 unprotectUrlAndGoTo();
             }
@@ -167,7 +166,7 @@ async function unprotectUrlAndGoTo() {
         decryptUrlButton.disabled = '';
 
         try {
-            const decryptedText = await decrypt(keyInput.value, decryptKeyData[1], decryptKeyData[0]);
+            const decryptedText = await decrypt(keyInput.value, decodeURIComponent(decryptKeyData[1]), decodeURIComponent(decryptKeyData[0]));
             const host = window.location.protocol + "//" + window.location.host;
             window.location.href = host + "/exchange/" + decryptedText;
 
@@ -189,7 +188,7 @@ async function initializeUrlProtectionField(checked) {
         if (checked) {
             protectUrlPasswordBox.style.display = '';
             const key = await generateKey();
-            const exportedKey = await exportKey2hex(key);
+            const exportedKey = await exportKey2base64(key);
             protectUrlPassword.value = exportedKey
         }
         else {
@@ -305,7 +304,7 @@ async function generateASecureExchange() {
                     ShowGenerationErrorBox("Mismatch of SHA256 detected. Do you have a man in the middle? Local-Hash: " + localHash + " / Server-Hash: " + serverHash);
                 }
                 else {
-                    const exportedKey = await exportKey2hex(key);
+                    const exportedKey = await exportKey2base64(key);
                     const host = window.location.protocol + "//" + window.location.host;
                     let urlParameters = "?data=" + encodeURIComponent(responseJson.uploadId) + "#" + encodeURIComponent(exportedKey) + "-" + encodeURIComponent(encryptedData.iv);
                     let urlController = "exchange";
@@ -314,9 +313,9 @@ async function generateASecureExchange() {
                     const protectUrlSwitcher = document.getElementById("protectUrl");
 
                     if (protectUrlSwitcher.hasAttribute('checked') && protectUrlPassword.value) {
-                        const key = await importKeyFromHex(protectUrlPassword.value);
+                        const key = await importKeyFromBase64(protectUrlPassword.value);
                         const encryptedUrl = await encrypt(key, urlParameters);
-                        urlParameters = "#P-" + encryptedUrl.ciphertext + "-" + encryptedUrl.iv
+                        urlParameters = "#P-" + encodeURIComponent(encryptedUrl.ciphertext) + "-" + encodeURIComponent(encryptedUrl.iv)
                         urlController = "protect";
                     }
 
@@ -567,7 +566,7 @@ async function decryptDataResponse(responseData) {
         const responseObject = JSON.parse(responseData);
         const hashValue = window.location.hash.replace("#", "");
         const decryptKeyData = hashValue.split("-");
-        const decryptedText = await decrypt(decryptKeyData[0], decryptKeyData[1], responseObject.data);
+        const decryptedText = await decrypt(decodeURIComponent(decryptKeyData[0]), decodeURIComponent(decryptKeyData[1]), responseObject.data);
         const localHash = await sha256(responseObject.data);
 
         updateFrontendAfterDecryption(decryptedText, responseObject.hash, localHash);

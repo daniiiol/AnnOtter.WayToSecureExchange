@@ -17,25 +17,27 @@ async function generateKey() {
     return key;
 }
 
+
 /**
- * Exports a key to a hex string
+ * Exports a key to a base64 string
  * @param {any} key
  * @returns {string}
  */
-async function exportKey2hex(key) {
+async function exportKey2base64(key) {
     let exportedKeyBuffer = await crypto.subtle.exportKey('raw', key);
     let exportedKeyArray = new Uint8Array(exportedKeyBuffer);
-    return Array.from(exportedKeyArray).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    let binaryString = Array.from(exportedKeyArray).map(byte => String.fromCharCode(byte)).join('');
+    return btoa(binaryString);
+
 }
 
 /**
- * Imports a key from a hex string
- * @param {string} hexKey
+ * Imports a key from a base64 string
+ * @param {string} base64key
  * @returns {CryptoKey}
  */
-async function importKeyFromHex(hexKey) {
-    let buffer = hex2buf(hexKey);
-
+async function importKeyFromBase64(base64key) {
+    let buffer = base64tobuf(base64key);
     let key = await crypto.subtle.importKey(
         'raw',
         buffer,
@@ -83,31 +85,37 @@ function buf2str(buffer) {
 }
 
 /**
- * Decodes a string of hex to a byte array.
- * @param {String} hexStr
+ * Decodes a base64 string to a byte array.
+ * @param {String} base64str
  * @returns {Uint8Array} 
  */
-function hex2buf(hexStr) {
-    return new Uint8Array(hexStr.match(/.{2}/g).map(h => parseInt(h, 16)));
+function base64tobuf(base64str) {
+    let binaryStr = atob(base64str);
+    let bytes = new Uint8Array(binaryStr.length);
+
+    for (let i = 0; i < binaryStr.length; i++) {
+        bytes[i] = binaryStr.charCodeAt(i);
+    }
+    
+    return bytes;
 }
 
 /**
- * Encodes a byte array as a string of hex.
+ * Encodes a byte array as a base64 string.
  * @param {Uint8Array} buffer
  * @returns {String} 
  */
-function buf2hex(buffer) {
-    return Array.prototype.slice
-        .call(new Uint8Array(buffer))
-        .map(x => [x >> 4, x & 15])
-        .map(ab => ab.map(x => x.toString(16)).join(""))
-        .join("");
+function buf2base64(buffer) {
+    let uint8Array = new Uint8Array(buffer);
+    let binaryString = Array.from(uint8Array).map(byte => String.fromCharCode(byte)).join('');
+
+    return btoa(binaryString);
 }
 
 /**
  * Given a passphrase and some plaintext, this derives a key
  * (generating a new salt), and then encrypts the plaintext with the derived
- * key using AES-GCM. The ciphertext, salt, and iv are hex encoded.
+ * key using AES-GCM. The ciphertext, salt, and iv are base64 encoded.
  * @param {String} key 
  * @param {String} plaintext
  * @returns {Promise<String>} 
@@ -119,24 +127,23 @@ async function encrypt(key, plaintext) {
     const ciphertextValue = await crypto.subtle.encrypt({ name: "AES-GCM", iv: ivValue }, key, data);
 
     return {
-        iv: buf2hex(ivValue),
-        ciphertext: buf2hex(ciphertextValue)
+        iv: buf2base64(ivValue),
+        ciphertext: buf2base64(ciphertextValue)
     }
 }
 
 /**
- * Given a passphrase, salt, iv and ciphertext as given by `encrypt`,
+ * Given a key, iv and ciphertext as given by `encrypt`,
  * this decrypts the ciphertext and returns the original plaintext
- * @param {String} passphrase 
- * @param {String} salt 
+ * @param {String} base64key
  * @param {String} iv
  * @param {String} ciphertext
  * @returns {Promise<String>}
  */
-async function decrypt(hexKey, iv, ciphertext) {
-    const key = await importKeyFromHex(hexKey)
-    const ivValue = hex2buf(iv);
-    const dataValue = hex2buf(ciphertext);
+async function decrypt(base64key, iv, ciphertext) {
+    const key = await importKeyFromBase64(base64key)
+    const ivValue = base64tobuf(iv);
+    const dataValue = base64tobuf(ciphertext);
 
     return crypto.subtle.decrypt({ name: "AES-GCM", iv: ivValue }, key, dataValue)
         .then(v => buf2str(new Uint8Array(v)));
