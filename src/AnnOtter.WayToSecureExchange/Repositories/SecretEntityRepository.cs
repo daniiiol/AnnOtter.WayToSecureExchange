@@ -1,5 +1,4 @@
 ﻿using AnnOtter.WayToSecureExchange.Configuration.AppSettings;
-using AnnOtter.WayToSecureExchange.Controllers.API;
 using AnnOtter.WayToSecureExchange.Databases;
 using AnnOtter.WayToSecureExchange.Models.Database;
 using Microsoft.EntityFrameworkCore;

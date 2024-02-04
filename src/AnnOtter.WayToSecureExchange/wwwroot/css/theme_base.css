@@ -1,0 +1,118 @@
+
+.checkSuccess {
+    color: {{SuccessColor}};
+}
+
+.copyElement:hover {
+    color: {{CopyElementColor}};
+}
+
+.copyElement:active {
+    color: {{CopyElementAccentColor}};
+}
+
+.warning {
+    color: {{WarningColor}};
+}
+
+.warning-extreme {
+    color: {{WarningAccentColor}};
+}
+
+.info {
+    color: {{InfoColor}};
+}
+
+.info-extreme {
+    color: {{InfoAccentColor}};
+}
+
+.success {
+    color: {{SuccessColor}};
+}
+
+.success-extreme {
+    color: {{SuccessAccentColor}};
+}
+
+.footerLink {
+    color: {{TextColor}};
+}
+
+    .footerLink:hover {
+        color: {{SecondaryColor}};
+    }
+
+hr {
+    color: {{HighlightAccentColor}};
+}
+
+/* Overwrite Bootstrap Colors */
+main {
+    --bs-body-color: {{TextColor}} !important;
+    --bs-body-bg: {{PrimaryColor}} !important;
+    --bs-tertiary-bg: {{HighlightColor}} !important;
+    --bs-border-color: {{HighlightAccentColor}} !important;
+}
+
+.text-bg-dark-ao {
+    color: {{SecondaryColor}} !important;
+    background-color: {{PrimaryColor}} !important;
+}
+
+button:disabled {
+    color: {{PrimaryColor}} !important;
+}
+
+.btn-bg-ao {
+    background-color: {{SecondaryColor}} !important;
+    border-color: {{SecondaryColor}} !important;
+    --bs-btn-color: {{PrimaryColor}} !important;
+    --bs-btn-bg: {{SecondaryColor}} !important;
+    --bs-btn-border-color:{{SecondaryColor}} !important;
+    --bs-btn-hover-color: {{PrimaryColor}} !important;
+    --bs-btn-hover-bg: {{SecondaryAccentColor}} !important;
+    --bs-btn-disabled-color: {{PrimaryColor}} !important;
+    --bs-btn-disabled-bg: {{SecondaryColor}} !important;
+    --bs-btn-active-color: {{PrimaryColor}} !important;
+    --bs-btn-active-bg: {{SecondaryAccentColor}} !important;
+    --bs-btn-active-border-color: {{SecondaryAccentColor}} !important;
+}
+
+    .btn-bg-ao:hover {
+        background-color: {{SecondaryAccentColor}} !important;
+        border-color: {{SecondaryAccentColor}} !important;
+    }
+
+.border-ao {
+    border-color: {{PrimaryColor}} !important;
+}
+
+.text-ao {
+    color: {{SecondaryColor}} !important;
+}
+
+textarea.form-control {
+    background-color: {{PrimaryAccentColor}} !important;
+}
+
+textarea.form-control:disabled {
+    background-color: {{HighlightAccentColor}} !important;
+}
+
+code {
+    color: {{CodeColor}} !important;
+}
+
+.form-control:disabled {
+    background-color: {{PrimaryAccentColor}} !important;
+}
+
+.form-check-input:checked {
+    background-color: {{HighlightColor}} !important;
+    border-color: {{HighlightAccentColor}} !important;
+}
+
+.form-control {
+    background-color: {{PrimaryAccentColor}} !important;
+}

@@ -7,10 +7,10 @@
 
 <h1>@Model.Labels.MainTitle</h1>
 <p class="lead">
-    @Model.Labels.HomeLead_Part1 <button type="button" class="btn btn-light fw-bold" style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .6rem;">@Model.Labels.HomeGenerateButton</button> @Model.Labels.HomeLead_Part2
+    @Model.Labels.HomeLead_Part1 <button type="button" class="btn fw-bold btn-bg-ao" style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .6rem;">@Model.Labels.HomeGenerateButton</button> @Model.Labels.HomeLead_Part2
 </p>
 
-<div class="card border-dark">
+<div class="card border-ao">
     <div class="card-body">
 
         @* Plaintext Box *@
@@ -35,7 +35,7 @@
 
         @* Generate Button *@
         <div class="col-auto">
-            <button id="encryptDataButton" disabled="disabled" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.HomeGenerateButton</button>
+            <button id="encryptDataButton" disabled="disabled" class="btn btn-lg fw-bold btn-bg-ao">@Model.Labels.HomeGenerateButton</button>
         </div>
 
         @* Resultbox *@
@@ -83,7 +83,7 @@
         @* Reset Button *@
         <div class="col-auto" id="resetDataButton" style="display:none;">
             <hr />
-            <button id="resetExchangeButton" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.HomeCreateNewSecret</button>
+            <button id="resetExchangeButton" class="btn btn-lg fw-bold btn-bg-ao">@Model.Labels.HomeCreateNewSecret</button>
         </div>
     </div>
 </div>

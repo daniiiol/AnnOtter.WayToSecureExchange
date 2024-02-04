@@ -7,10 +7,10 @@
 
 <h1>@Model.Labels.MainTitle</h1>
 <p class="lead">
-    @Model.Labels.ExchangeLead_Part1 <button type="button" class="btn btn-light fw-bold" style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .6rem;">@Model.Labels.ExchangeRevealButton</button> @Model.Labels.ExchangeLead_Part2
+    @Model.Labels.ExchangeLead_Part1 <button type="button" class="btn fw-bold btn-bg-ao" style="--bs-btn-padding-y: .20rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .6rem;">@Model.Labels.ExchangeRevealButton</button> @Model.Labels.ExchangeLead_Part2
 </p>
 
-<div class="card border-dark">
+<div class="card border-ao">
     <div class="card-body">
         <div class="input-group spacebox">
             <span class="input-group-text"><i id="statusIcon" class="fa-solid fa-lock"></i></span>
@@ -19,7 +19,7 @@
         </div>
 
         <div class="col-auto">
-            <button id="revealDataButton" disabled="disabled" class="btn btn-lg btn-light fw-bold border-white bg-white">@Model.Labels.ExchangeRevealButton</button>
+            <button id="revealDataButton" disabled="disabled" class="btn btn-lg fw-bold btn-bg-ao">@Model.Labels.ExchangeRevealButton</button>
         </div>
 
         <div id="infoArea">
