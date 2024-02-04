@@ -15,7 +15,36 @@ Before you can run the web application, make sure you have the latest version of
 
 Start by cloning the repository to your local machine or downloading it from the repository's page on GitHub.
 
-### Fast run with Docker-Compose
+
+### Fast start with Docker Run
+
+```bash
+docker run -p 8081:8080 daniiiol/annotter.way2secexchange:latest
+```
+
+Launch your browser on http://localhost:8081
+
+### Compile and run with Docker Build
+
+If you want to compile and run the application locally, you can do so with the following instruction:
+
+#### Navigate to Dockerfile
+Navigate to `./src/AnnOtter.WayToSecureExchange/` and execute the following command in your favorite terminal application:
+
+```bash
+docker build . -t annotter.way2secexchange:dev
+```
+
+#### Start the application (local image)
+Now, start the web application with the following command:
+
+```bash
+docker run -p 8082:8080 annotter.way2secexchange:dev
+```
+
+Launch your browser on http://localhost:8082
+
+### Run with Docker-Compose
 
 Navigate to `./src/docker-compose/` and execute this command in your favorite terminal application: 
 
@@ -48,37 +77,9 @@ The following is a brief explanation:
 | RATELIMITER__GENERALAUTOREPLENISHMENT | Whether general rate limiting auto-replenishes permits (true or false). | `true` | Specifies that the FixedWindowRateLimiter refreshes the counters automatically.
 | APPEARANCE__SHOWLOGO | Whether to show the application's logo (true or false). | `true` | The logo will be displayed on the page.
 | APPEARANCE__LOGOPATH | The path to the application's logo image. <br><br>As other examples there are: `/img/aow2se-logo2.png` or `/img/aow2se-logo.png` built-in. | `/img/aow2se-logo3.png` | The specified logo will be loaded according to the sample address.
+| APPEARANCE__ _colorname_ | If you would like to change the app colors, you can overwrite almost all hex-codes.  | See `appsettings.json` for all colors. | A valid HTML hex color code starts with a hash (#) followed by exactly 3 or 6 hexadecimal characters. E.g. `#123456`
 | SECURITYHEADERS__ _headername_ | A specific security header name. <br><br>If you set an empty value, the specific security header will be disabled. | See `appsettings.json` for all security headers. | -
 | LABELS__ _labelname_ | If you don't like the pirate language, you can overwrite almost all static display texts.  | See `appsettings.json` for all label names. | -
-
-
-### Docker run
-
-```bash
-docker run -p 8081:8080 daniiiol/annotter.way2secexchange:latest
-```
-
-Launch your browser on http://localhost:8081
-
-### Compile and run with Docker Build
-
-If you want to compile and run the application locally, you can do so with the following instruction:
-
-#### Navigate to Dockerfile
-Navigate to `./src/AnnOtter.WayToSecureExchange/` and execute the following command in your favorite terminal application:
-
-```bash
-docker build . -t annotter.way2secexchange:dev
-```
-
-#### Start the application (local image)
-Now, start the web application with the following command:
-
-```bash
-docker run -p 8082:8080 annotter.way2secexchange:dev
-```
-
-Launch your browser on http://localhost:8082
 
 ## How it works
 
@@ -159,7 +160,7 @@ The choice of encryption algorithm is based on the requirements of data transmis
 
 ### Q: How likely is it that a URL can be discovered through brute-forcing?
 
-**A:** At present, we do not foresee the URL being feasibly discovered through brute-force methods. This is due to the fact that an attacker would need to know a data ID existing within the system, which corresponds to a standard GUID. Even if they were to discover an existing GUID, they would additionally need to possess the corresponding 64-character key and the 24-character IV to generate a correct link in that combination. Based on current knowledge, we do not consider this to be a viable method of attack.
+**A:** At present, we do not foresee the URL being feasibly discovered through brute-force methods. This is due to the fact that an attacker would need to know a data ID existing within the system, which corresponds to a standard GUID. Even if they were to discover an existing GUID, they would additionally need to possess the corresponding 32-byte key and the 12-byte IV to generate a correct link in that combination. Based on current knowledge, we do not consider this to be a viable method of attack.
 
 ### Q: What is the purpose of this project?
 **A:** The primary objective of this project was to create a simple yet effective system for securely exchanging sensitive information. Many organizations often transmit various confidential data through insecure communication channels such as chat platforms or email systems, potentially exposing them to access by system administrators. With this small-scale web project, our aim was to mitigate this threat and provide a more secure means of data exchange.

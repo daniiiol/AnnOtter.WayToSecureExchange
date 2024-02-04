@@ -86,6 +86,8 @@ app.UseAuthorization();
 
 app.UseSecurityHeaders();
 
+app.UseThemeMiddleware();
+
 app.UseRateLimiter();
 
 app.MapControllerRoute(
