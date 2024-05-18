@@ -11,7 +11,7 @@ Depending on your needs, you can find a CLI tool at the following link, which lo
 ### Install pyryptodome
 
 ```bash
-pip install pyryptodome
+pip install pycryptodome
 ```
 
 ## Usage CLI Tool
