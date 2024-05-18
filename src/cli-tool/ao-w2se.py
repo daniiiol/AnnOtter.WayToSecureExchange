@@ -81,7 +81,7 @@ GitHub: https://github.com/daniiiol/AnnOtter.WayToSecureExchange
     args = parser.parse_args()
     
     plaintext = args.text
-    server = args.server
+    server = args.server.rstrip('/')
     urlOnly = args.urlOnly
     
     b64_key, b64_iv, b64_ciphertext, b64_tag = encrypt_aes_gcm(plaintext)
