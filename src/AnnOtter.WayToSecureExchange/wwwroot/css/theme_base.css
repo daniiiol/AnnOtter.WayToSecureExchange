@@ -116,3 +116,33 @@ code {
 .form-control {
     background-color: {{PrimaryAccentColor}} !important;
 }
+
+/* Status Signs */
+
+.failSign {
+    border-color: {{WarningColor}};
+}
+
+.loader.failSign {
+    &::before {
+        background-color: {{WarningAccentColor}};
+    }
+
+    &::after {
+        background-color: {{WarningAccentColor}};
+    }
+}
+
+.successSign {
+    border-color: {{SuccessColor}};
+}
+
+.loader.successSign {
+    &::before {
+        background-color: {{SuccessAccentColor}};
+    }
+
+    &::after {
+        background-color: {{SuccessAccentColor}};
+    }
+}
