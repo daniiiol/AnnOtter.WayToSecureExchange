@@ -129,12 +129,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (result != -1) {
                 plaintextData.value = '------- DATA FOUND -------';
                 revealDataButton.disabled = '';
+                success();
             }
             else {
                 const hintWarning = document.getElementById("hintWarning");
                 const hintNotFound = document.getElementById("hintNotFound");
                 const statusIcon = document.getElementById("statusIcon");
 
+                fail();
                 plaintextData.value = '------- DATA NOT FOUND -------';
                 revealDataButton.disabled = 'disabled';
                 revealDataButton.style.display = 'none';
@@ -146,6 +148,31 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 });
+
+/**
+ * Loader: Set fail state
+ */
+function fail() {
+    const loader = document.querySelector('.loader');
+    loader.classList.add('failSign');
+}
+
+/**
+ * Loader: Set success state
+ */
+function success() {
+    const loader = document.querySelector('.loader');
+    loader.classList.add('successSign');
+}
+
+/**
+ * Loader: Reset loader
+ */
+function reset  () {
+    const loader = document.querySelector('.loader');
+    loader.classList.remove('failSign');
+    loader.classList.remove('successSign');
+}
 
 /**
  * Try to unprotect the URL and go to the secret exchange address
@@ -532,7 +559,7 @@ async function copyToClipboard(htmlElement) {
  * Reveals the secret based on the given dataId in the URL.
  */
 async function revealData() {
-
+    reset();
     const plaintextData = document.getElementById("plaintextData");
     plaintextData.rows = 10;
 
@@ -543,12 +570,14 @@ async function revealData() {
         const apiResponse = await GetSecret(dataParameter);
 
         if (apiResponse.status != -1) {
+            const plaintextArea = document.getElementById("plaintext-area");
+            plaintextArea.style.display = '';
             decryptDataResponse(apiResponse.message);
         }
         else {
             const plaintextData = document.getElementById("plaintextData");
             const revealDataButton = document.getElementById("revealDataButton");
-
+            fail();
             plaintextData.value = apiResponse.message;
             revealDataButton.disabled = ''
             revealDataButton.innerText = "Try again to reveal";
@@ -585,6 +614,7 @@ function updateFrontendAfterDecryptionError() {
     const statusIcon = document.getElementById("statusIcon");
     const hintWarning = document.getElementById("hintWarning");
 
+    fail();
     plaintextData.value = "Your decryption keys were not correct. For security reasons, the secret was removed.\n\nPlease contact the sender of this information and request a re-generation of the secret.\n\nWe have no way to restore your secret.";
     revealDataButton.style.display = 'none';
     revealDataButton.innerText = "Error";
@@ -611,6 +641,7 @@ function updateFrontendAfterDecryption(decryptedText, serverHash, localHash) {
     serverHashEncrypted.innerText = serverHash;
     localHashEncrypted.innerText = localHash;
 
+    success();
     plaintextData.value = decryptedText;
     plaintextData.className = 'form-control';
     revealDataButton.disabled = 'disabled';

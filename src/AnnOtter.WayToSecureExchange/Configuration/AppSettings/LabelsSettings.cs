@@ -12,6 +12,11 @@
         public string? MainTitle { get; set; }
 
         /// <summary>
+        /// Gets or sets the label BrowserTitle on the HTML document.
+        /// </summary>
+        public string? BrowserTitle { get; set; }
+
+        /// <summary>
         /// Gets or sets the label HomeLead_Part1 on the rendered view.
         /// </summary>
         public string? HomeLead_Part1 { get; set; }
