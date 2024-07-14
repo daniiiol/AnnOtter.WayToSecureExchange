@@ -19,3 +19,9 @@ This repository contains a .NET web application designed for secure information 
 # Example
 
 ![Sample Screenshot of a communication between Alice and Bob.](./docs/images/sample_screenshot_1.png)
+
+## Do you like it more colorful?
+
+The colors and texts of the tool can be fully customized. This means the tool can be used for all purposes, from playful to serious.
+
+<img src="./docs/images/examples/blue-exchange.png" width="250px"> <img src="./docs/images/examples/sound-exchange.png" width="250px"> <img src="./docs/images/examples/chill-exchange.png" width="250px"> <img src="./docs/images/examples/game-exchange.png" width="250px"> <img src="./docs/images/examples/coffee-exchange.png" width="250px"> <img src="./docs/images/examples/lifestyle-exchange.png" width="250px"> <img src="./docs/images/examples/mail-exchange.png" width="250px"> <img src="./docs/images/examples/chicken-exchange.png" width="250px"> <img src="./docs/images/examples/sport-exchange.png" width="250px">
