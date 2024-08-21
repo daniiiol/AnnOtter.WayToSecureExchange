@@ -39,7 +39,8 @@ def encrypt_aes_gcm(plaintext):
 
 def send_post_request(url, data):
     headers = {'Content-Type': 'application/json'}
-    response = requests.post(url, json=data, headers=headers)
+    payload = {'data': data}
+    response = requests.post(url, json=payload, headers=headers)
     return response
 
 if __name__ == "__main__":
