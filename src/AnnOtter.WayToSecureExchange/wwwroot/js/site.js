@@ -509,9 +509,14 @@ async function UploadCiphertext(ciphertext) {
     const host = window.location.protocol + "//" + window.location.host;
     const url = host + '/api/exchange/upload';
 
+    // Wrap the ciphertext in an object with the "data" property
+    const payload = {
+        data: ciphertext
+    };
+
     const requestOptions = {
         method: 'POST',
-        body: JSON.stringify(ciphertext),
+        body: JSON.stringify(payload),
         headers: {
             'Content-Type': 'application/json',
         },

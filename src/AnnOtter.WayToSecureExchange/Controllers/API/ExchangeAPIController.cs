@@ -131,11 +131,13 @@ namespace AnnOtter.WayToSecureExchange.Controllers.API
         /// <param name="data">ID to identify a secret uniquely.</param>
         /// <returns>Confirmation of the upload process. If successful, transmits HTTP status code 200 (ok) with a confirmation object; if an error occurs, transmits 500 (server error).</returns>
         [HttpPost("upload")]
-        public ActionResult<UploadConfirmationModel> Upload([FromBody] string data)
+        public ActionResult<UploadConfirmationModel> Upload([FromBody] UploadDataModel uploadData)
         {
             try
             {
-                if (string.IsNullOrEmpty(data))
+                var data = (uploadData != null && !string.IsNullOrEmpty(uploadData.Data)) ? uploadData.Data : string.Empty;
+
+                if (data == null || string.IsNullOrEmpty(data))
                 {
                     throw new InputDataInvalidException("Validation Error: data must not be empty.");
                 }
