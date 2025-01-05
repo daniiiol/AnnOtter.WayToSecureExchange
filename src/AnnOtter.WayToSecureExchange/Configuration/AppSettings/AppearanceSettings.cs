@@ -205,7 +205,10 @@
             {
                 return string.IsNullOrEmpty(favicon) ? DEFAULT_FAVICON : favicon;
             }
-            set => favicon = value;
+            set
+            {
+                favicon = IsBase64String(value) ? value : string.Empty;
+            }
         }
 
         /// <summary>
@@ -228,6 +231,26 @@
             }
 
             return System.Text.RegularExpressions.Regex.IsMatch(hexCode, "^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$");
+        }
+
+
+        /// <summary>
+        /// Determines whether a given string is a valid Base64-encoded string.
+        /// </summary>
+        /// <param name="value">The string to validate as Base64.</param>
+        /// <returns>
+        /// True if the input string is a valid Base64-encoded string; 
+        /// otherwise, false. Returns false for null or empty strings.
+        /// </returns>
+        private static bool IsBase64String(string? value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+
+            var buffer = new Span<byte>(new byte[value.Length]);
+            return Convert.TryFromBase64String(value, buffer, out _);
         }
     }
 }

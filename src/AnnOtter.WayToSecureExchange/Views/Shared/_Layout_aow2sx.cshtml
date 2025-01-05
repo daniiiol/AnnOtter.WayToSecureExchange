@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/css/main.css?v=0.15.0" integrity="sha384-7NQGVgDfKczpdY62troz1wxpxE6eOq8ClE+WMkEKM460fchBJBZheLu3F4DCv6ea" />
     <link rel="stylesheet" href="/css/theme.css?v=0.15.0" />
     <link rel="stylesheet" href="/lib/bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ">
-    <link rel="icon" href="data:image/x-icon;base64,@Model.Appearance.Favicon">
+    <link rel="icon" href="data:image/x-icon;base64,@System.Net.WebUtility.HtmlEncode(Model.Appearance.Favicon)">
     <title>@ViewData["Title"] - @browserTitle</title>
 
 </head>
