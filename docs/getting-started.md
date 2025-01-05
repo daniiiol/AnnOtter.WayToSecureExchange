@@ -64,6 +64,7 @@ The following is a brief explanation:
 | RATELIMITER__GENERALPERMITLIMIT | The permit limit for general rate limiting. | `20` | Maximum 20 requests possible within the valid GENERALWINDOW
 | RATELIMITER__GENERALWINDOW | The window duration for general rate limiting. | `30` | The time limit for GENERALPERMITLIMIT is 30 seconds
 | RATELIMITER__GENERALAUTOREPLENISHMENT | Whether general rate limiting auto-replenishes permits (true or false). | `true` | Specifies that the FixedWindowRateLimiter refreshes the counters automatically.
+| APPEARANCE__FAVICON | Base64 string of an `image/x-icon` image to overwrite the default favicon. | `AAABAAEAICAQAAAAAADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAgAIAAAAAAAA....` | The favicon will be displayed on the browser tab.
 | APPEARANCE__SHOWLOGO | Whether to show the application's logo (true or false). | `true` | The logo will be displayed on the page.
 | APPEARANCE__LOGOPATH | The path to the application's logo image. <br><br>As other examples there are: `/img/aow2se-logo2.png` or `/img/aow2se-logo.png` built-in. | `/img/aow2se-logo3.png` | The specified logo will be loaded according to the sample address.
 | APPEARANCE__ _colorname_ | If you would like to change the app colors, you can overwrite almost all hex-codes.  | See `appsettings.json` for all colors. | A valid HTML hex color code starts with a hash (#) followed by exactly 3 or 6 hexadecimal characters. E.g. `#123456`
