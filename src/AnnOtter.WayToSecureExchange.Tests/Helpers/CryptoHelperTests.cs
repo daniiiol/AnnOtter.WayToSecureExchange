@@ -58,12 +58,12 @@ namespace AnnOtter.WayToSecureExchange.Tests.Helpers
             string plaintext = "This is a test message.";
 
             // Act and Assert
-            Assert.ThrowsException<ArgumentNullException>(() =>
+            Assert.ThrowsExactly<ArgumentNullException>(() =>
             {
                 CryptoHelper.EncryptChaCha20Poly1305(plaintext, null);
             });
 
-            Assert.ThrowsException<CryptographicException>(() =>
+            Assert.ThrowsExactly<CryptographicException>(() =>
             {
                 CryptoHelper.EncryptChaCha20Poly1305(plaintext, string.Empty);
             });
@@ -85,7 +85,7 @@ namespace AnnOtter.WayToSecureExchange.Tests.Helpers
             encryptionResponse.Tag = Convert.ToBase64String(stackalloc byte[16]);
 
             // Act and Assert
-            Assert.ThrowsException<AuthenticationTagMismatchException>(() =>
+            Assert.ThrowsExactly<AuthenticationTagMismatchException>(() =>
             {
                 CryptoHelper.DecryptChaCha20Poly1305(encryptionResponse.Ciphertext, encryptionResponse.Nonce, key, encryptionResponse.Tag);
             });
