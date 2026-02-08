@@ -30,12 +30,14 @@ namespace AnnOtter.WayToSecureExchange.Tests.Middleware
                 CrossOriginEmbedderPolicy = "require-corp",
                 CrossOriginOpenerPolicy = "same-origin",
             };
-            var securityHeadersOptions = Options.Create(securityHeadersConfig);
+            var middleware = new SecurityHeadersMiddleware((innerContext) => Task.CompletedTask);
+
             var logger = Substitute.For<ILogger<SecurityHeadersMiddleware>>();
-            var middleware = new SecurityHeadersMiddleware((innerContext) => Task.CompletedTask, logger, securityHeadersOptions);
+            var options = Substitute.For<IOptions<SecurityHeaderSettings>>();
+            options.Value.Returns(securityHeadersConfig);
 
             // Act
-            await middleware.Invoke(context);
+            await middleware.Invoke(context, logger, options);
 
             // Assert
             Assert.AreEqual(securityHeadersConfig.ContentSecurityPolicy, responseHeaders["Content-Security-Policy"].ToString());
@@ -59,12 +61,14 @@ namespace AnnOtter.WayToSecureExchange.Tests.Middleware
             responseHeaders["X-Powered-By"] = "TestPoweredBy";
             responseHeaders["x-aspnet-version"] = "TestVersion";
             var securityHeadersConfig = new SecurityHeaderSettings();
-            var securityHeadersOptions = Options.Create(securityHeadersConfig);
+            var middleware = new SecurityHeadersMiddleware((innerContext) => Task.CompletedTask);
+
             var logger = Substitute.For<ILogger<SecurityHeadersMiddleware>>();
-            var middleware = new SecurityHeadersMiddleware((innerContext) => Task.CompletedTask, logger, securityHeadersOptions);
+            var options = Substitute.For<IOptions<SecurityHeaderSettings>>();
+            options.Value.Returns(securityHeadersConfig);
 
             // Act
-            await middleware.Invoke(context);
+            await middleware.Invoke(context, logger, options);
 
             // Assert
             Assert.IsFalse(responseHeaders.ContainsKey("Server"));
@@ -80,12 +84,12 @@ namespace AnnOtter.WayToSecureExchange.Tests.Middleware
         public void UseSecurityHeaders_ThrowsArgumentNullException_WhenAppIsNull()
         {
             // Arrange
-            IApplicationBuilder app = null;
+            IApplicationBuilder? app = null;
 
             // Act and Assert
-            Assert.ThrowsException<ArgumentNullException>(() =>
+            Assert.ThrowsExactly<ArgumentNullException>(() =>
             {
-                app.UseSecurityHeaders();
+                SecurityHeadersMiddlewareExtensions.UseSecurityHeaders(app!);
             });
         }
 
