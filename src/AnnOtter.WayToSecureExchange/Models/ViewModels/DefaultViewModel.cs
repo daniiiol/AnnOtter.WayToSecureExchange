@@ -21,13 +21,20 @@ namespace AnnOtter.WayToSecureExchange.Models.ViewModels
         public AppearanceSettings Appearance { get => _appearanceSettings; }
 
         /// <summary>
+        /// Maximum allowed size (in characters) for a secret.
+        /// </summary>
+        public int MaxSecretSize { get; }
+
+        /// <summary>
         /// Ctor of default view model class.
         /// </summary>
         /// <param name="labelsSettings">LabelsSettings to get all text objects.</param>
         /// <param name="appearanceSettings">AppearanceSettings to make some elements customizable.</param>
-        public DefaultViewModel(LabelsSettings labelsSettings, AppearanceSettings appearanceSettings) {
+        /// <param name="maxSecretSize">Maximum allowed secret size in characters.</param>
+        public DefaultViewModel(LabelsSettings labelsSettings, AppearanceSettings appearanceSettings, int maxSecretSize = 16384) {
             this._labelsSettings = labelsSettings;
             this._appearanceSettings = appearanceSettings;
+            this.MaxSecretSize = maxSecretSize;
         }
     }
 }

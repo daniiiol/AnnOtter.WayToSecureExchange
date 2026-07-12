@@ -19,6 +19,7 @@ namespace AnnOtter.WayToSecureExchange.Controllers.API
         private readonly ISecretEntityRepository _secretRepo;
         private readonly ILogger _logger;
         private readonly IOptions<EncryptionSettings> _config;
+        private readonly IOptions<MainSettings> _mainConfig;
 
         /// <summary>
         /// Ctor of Web API Controller.
@@ -26,11 +27,12 @@ namespace AnnOtter.WayToSecureExchange.Controllers.API
         /// <param name="logger">DI injected logging framework.</param>
         /// <param name="secretRepository">DI injected repository to manage the database.</param>
         /// <param name="configuration">DI injected EncryptionSettings instance.</param>
-        public ExchangeApiController(ILogger<ExchangeApiController> logger, ISecretEntityRepository secretRepository, IOptions<EncryptionSettings> configuration)
+        public ExchangeApiController(ILogger<ExchangeApiController> logger, ISecretEntityRepository secretRepository, IOptions<EncryptionSettings> configuration, IOptions<MainSettings> mainConfiguration)
         {
             this._logger = logger;
             this._secretRepo = secretRepository;
             this._config = configuration;
+            this._mainConfig = mainConfiguration;
         }
 
         /// <summary>
@@ -141,9 +143,11 @@ namespace AnnOtter.WayToSecureExchange.Controllers.API
                 {
                     throw new InputDataInvalidException("Validation Error: data must not be empty.");
                 }
-                else if (data.Length > 4096)
+                // The received data is AES-GCM encrypted and Base64-encoded ciphertext.
+                // Base64 overhead is ~4/3x the plaintext size, so the backend limit is scaled accordingly.
+                else if (data.Length > (int)(_mainConfig.Value.MaxSecretSize * 1.4))
                 {
-                    throw new InputDataInvalidException("Validation Error: data must not contain more than 2000 characters.");
+                    throw new InputDataInvalidException($"Validation Error: data must not contain more than {_mainConfig.Value.MaxSecretSize} characters.");
                 }
 
                 var resultModel = new UploadConfirmationModel();
