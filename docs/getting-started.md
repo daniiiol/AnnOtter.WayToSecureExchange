@@ -57,6 +57,7 @@ The following is a brief explanation:
 | ASPNETCORE_URLS | The URLs on which the web application listens for incoming requests (e.g., http://+:80). | `http://+:80` | Runs the application on HTTP port 80
 | POSTGRESQLCONNSTR_DatabaseConnection_AO_ExchangeDatabase | The connection string for the PostgreSQL database used by the application. | `Server=db.server.local;Database=ao_exchangedb;Port=5432;User Id=myUser;Password=myPassword;` | Uses the specified PostgreSQL database instead of an internal SQLite DB.
 | ENCRYPTION__KEY | The base64-encoded 256-bit key used for double encryption. | `PmMRx1J8EccLYqC4boe62R8s/Ahkh1YnzueM96MqAgc=` | Uses the sample key for server-side encryption.
+| MAIN__MAXSECRETSIZE | The maximum character length for the plaintext input of secrets. | `16384` | Maximum secret size is limited to 16384 characters 
 | MAIN__RETENTIONSPAN | The time span for retaining secrets in the application, e.g., deleting all secrets older than 30 days.<br><br>If you set `00.00:00:00`, the deletion of secrets will be disabled (not recommended). | `30.00:00:00` | Deletes all secrets older than 30 days
 | RATELIMITER__SHORTBURSTPERMITLIMIT | The permit limit for short burst rate limiting. | `6` | Maximum 6 requests possible within the valid SHORTBURSTWINDOW.
 | RATELIMITER__SHORTBURSTWINDOW | The window duration for short burst rate limiting. | `2` | The time limit for SHORTBURSTPERMITLIMIT is 2 seconds

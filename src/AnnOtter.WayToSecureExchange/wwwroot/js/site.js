@@ -255,10 +255,11 @@ function countChars() {
     const dataCounter = document.getElementById("dataCounter");
     const encryptDataButton = document.getElementById("encryptDataButton");
     const countValue = plainData.value.length;
+    const maxSize = parseInt(document.querySelector('meta[name="max-secret-size"]')?.content ?? '20480', 10);
 
-    dataCounter.innerText = countValue + " / " + "2000";
+    dataCounter.innerText = countValue + " / " + maxSize;
 
-    if (countValue > 2000) {
+    if (countValue > maxSize) {
         dataCounter.className = 'counter warning';
         encryptDataButton.disabled = 'disabled';
     }

@@ -16,7 +16,7 @@
         @* Plaintext Box *@
         <div class="input-group spacebox">
             <span class="input-group-text"><i class="fa-solid fa-message"></i></span>
-            <textarea id="plaintextData" class="form-control" aria-label="key" rows="10"></textarea> <p id="dataCounter" class="counter">0 / 2000</p>
+            <textarea id="plaintextData" class="form-control" aria-label="key" rows="10"></textarea> <p id="dataCounter" class="counter">0 / @Model.MaxSecretSize</p>
         </div>
 
         @* Protect Password Switcher *@

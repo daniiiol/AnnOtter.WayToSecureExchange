@@ -12,6 +12,7 @@ services:
       #- POSTGRESQLCONNSTR_DatabaseConnection_AO_ExchangeDatabase=<PostgreSQL-connectionString>
       #- ENCRYPTION__KEY=<Add-Your-Base64-Encoded-32bit-Key-Here-For-Double-Encryption>
       #- MAIN__RETENTIONSPAN=30.00:00:00 # Deletes all Secrets > 30 Days
+      #- MAIN__MAXSECRETSIZE=16384 # The maximum character length for the plaintext input of secrets.
       #- RATELIMITER__SHORTBURSTPERMITLIMIT=6
       #- RATELIMITER__SHORTBURSTWINDOW=2
       #- RATELIMITER__SHORTBURSTAUTOREPLENISHMENT=true
