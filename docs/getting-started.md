@@ -45,6 +45,39 @@ The application will then start with default settings and a local SQLite databas
 
 You can directly navigate to `http://localhost:8080`.
 
+## Health check
+
+The application exposes a health endpoint at `/health`.
+
+- Docker Run example: `http://localhost:8081/health`
+- Local Docker Build example: `http://localhost:8082/health`
+- Docker Compose example: `http://localhost:8080/health`
+
+The endpoint returns a JSON response with the overall `status` and the individual checks for `database` and `application`.
+
+- `Healthy` and `Degraded` return HTTP `200 OK`
+- `Unhealthy` returns HTTP `503 Service Unavailable`
+
+Example response when everything is healthy:
+
+```json
+{
+	"status": "Healthy",
+	"checks": [
+		{
+			"name": "database",
+			"status": "Healthy",
+			"message": "Database is reachable."
+		},
+		{
+			"name": "application",
+			"status": "Healthy",
+			"message": "Application is running within normal parameters."
+		}
+	]
+}
+```
+
 ### Configuration
 
 You can modify the application by activating the commented lines in the `docker-compose.yml` file and filling them with proper values.

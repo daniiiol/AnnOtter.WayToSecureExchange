@@ -7,6 +7,9 @@
 ## Q: Which Docker Container do you use and why?
 **A:** We utilize a Docker container based on the nightly build variant of Ubuntu 22.04 Jammy Chiseled. This image has been specifically curated by Microsoft to establish a hardened runtime environment. Its robust security features and compatibility with our application's requirements make it an ideal choice for ensuring the safety and stability of our services. Have a look at https://devblogs.microsoft.com/dotnet/dotnet-6-is-now-in-ubuntu-2204/ for more insides about the Docker base image.
 
+## Q: How can I verify that the application is healthy?
+**A:** The application provides a health endpoint at `/health`. It returns a JSON document with the overall status and the current results of the `database` and `application` checks. A `Healthy` or `Degraded` result returns HTTP `200 OK`, while an `Unhealthy` result returns HTTP `503 Service Unavailable`. This is intended for simple monitoring, container probes, or load balancer checks.
+
 ## Q: Why do you encrypt with AEM-GCM in the frontend and ChaCha20Poly1305 in the backend?
 **A:** We have deliberately chosen to employ two different encryption algorithms to ensure an additional layer of security. This strategy allows us to maintain data security even if one algorithm is found to be weak or compromised. By utilizing distinct algorithms for frontend and backend encryption, we enhance the application's overall resilience to potential security vulnerabilities.
 
